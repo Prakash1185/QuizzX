@@ -6,6 +6,7 @@ import ErrorPage from './pages/ErrorPage';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AttendQuizPage from './pages/AttendQuizPage';
+import AfterQuizSubmitPage from "./pages/AfterQuizSubmitPage";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/all-quizzes" element={<QuizzesPage />} />
         <Route path="/create-account" element={<CreateAccountPage />} />
         <Route path="/quiz/:id" element={<AttendQuizPage />} />
+        <Route path="/quiz/:id/success" element={<AfterQuizSubmitPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       {/* <Footer /> */}
