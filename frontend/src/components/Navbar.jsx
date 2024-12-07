@@ -5,15 +5,15 @@ const Navbar = () => {
   const navigate = useNavigate()
   return (
     <>
-      <nav className='flex justify-around bg-white items-center py-1.5'>
+      <nav className='flex justify-around gap-48 bg-white items-center py-1.5 w-full z-20 shadow'>
         <div  >
-          <h1 onClick={()=>navigate('/home')} className='text-dark text-center md:text-start cursor-pointer text-[1.75rem] md:text-[2rem] font-poppins font-semibold'>
+          <h1 onClick={()=>navigate('/home')} className='text-dark text-center md:text-start cursor-pointer text-[1.75rem] md:text-[2rem] font-poppins font-bold md:font-semibold'>
             QuizzX
           </h1>
         </div>
         <div className='hidden sm:block'>
           <button onClick={() => navigate('/all-quizzes')} className='text-lg font-medium cursor-pointer bg-dark text-white px-3 py-1.5 rounded-md'>
-            Explore
+           Explore
           </button>
         </div>
         {/* <div className='md:hidden'>

@@ -4,6 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-    @apply bg-light
+body {
+  @apply bg-light;
 }
