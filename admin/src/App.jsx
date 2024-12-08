@@ -1,35 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route, Navigate } from "react-router-dom"
+import AdminHomePage from './pages/AdminHomePage';
+import AdminAllQuizzesPage from './pages/AdminAllQuizzesPage';
+import CreateQuizPage from './pages/CreateQuizPage';
+import EditQuizPage from './pages/EditQuizPage';
+import ShowAllUsersPage from './pages/ShowAllUsersPage';
+import QuizDetailsPage from './pages/QuizDetailsPage';
+import ErrorPage from './pages/ErrorPage';
+import Navbar from './components/Navbar';
+import AdminLoginPage from './pages/AdminLoginPage';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+const App = () => {
+    return (
+        <div>
+        <Navbar/>
+            <Routes>
+                <Route path="/" element={<Navigate to="/admin/login" />} />
+                <Route path="/home" element={<AdminHomePage />} />
+                <Route path="/admin/login" element={<AdminLoginPage />} />
+                <Route path="/all-quizzes" element={<AdminAllQuizzesPage />} />
+                <Route path="/create-quiz" element={<CreateQuizPage />} />
+                <Route path="/edit-quiz/:id" element={<EditQuizPage />} />
+                <Route path="/users" element={<ShowAllUsersPage />} />
+                <Route path="/quiz/details/:id" element={<QuizDetailsPage />} />
+                <Route path="*" element={<ErrorPage />} />
+            </Routes>
+        </div>
+    )
 }
 
 export default App
