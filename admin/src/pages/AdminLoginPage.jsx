@@ -15,7 +15,7 @@ const AdminLoginPage = () => {
         <input type="password" className='border border-dark border-opacity-90  py-2 rounded-md px-2 placeholder:text-lg text-black ' placeholder='Secret Key' required autoComplete='off'/>
 
 
-        <div className=' cursor-pointer ' onClick={() => navigate('/home')} >
+        <div className=' cursor-pointer ' onClick={() => navigate('/admin/home')} >
           <Button text={"Login"}/>
         </div>
 

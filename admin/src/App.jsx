@@ -8,22 +8,26 @@ import QuizDetailsPage from './pages/QuizDetailsPage';
 import ErrorPage from './pages/ErrorPage';
 import Navbar from './components/Navbar';
 import AdminLoginPage from './pages/AdminLoginPage';
+import Sidebar from "./components/Sidebar";
 
 const App = () => {
     return (
         <div>
         <Navbar/>
-            <Routes>
+        <div className="flex items-start">
+        <Sidebar/>
+        <Routes>
                 <Route path="/" element={<Navigate to="/admin/login" />} />
-                <Route path="/home" element={<AdminHomePage />} />
+                <Route path="/admin/home" element={<AdminHomePage />} />
                 <Route path="/admin/login" element={<AdminLoginPage />} />
-                <Route path="/all-quizzes" element={<AdminAllQuizzesPage />} />
-                <Route path="/create-quiz" element={<CreateQuizPage />} />
-                <Route path="/edit-quiz/:id" element={<EditQuizPage />} />
-                <Route path="/users" element={<ShowAllUsersPage />} />
-                <Route path="/quiz/details/:id" element={<QuizDetailsPage />} />
+                <Route path="/admin/all-quizzes" element={<AdminAllQuizzesPage />} />
+                <Route path="/admin/create-quiz" element={<CreateQuizPage />} />
+                <Route path="/admin/edit-quiz/:id" element={<EditQuizPage />} />
+                <Route path="/admin/users-list" element={<ShowAllUsersPage />} />
+                <Route path="/admin/quiz/details/:id" element={<QuizDetailsPage />} />
                 <Route path="*" element={<ErrorPage />} />
             </Routes>
+        </div>
         </div>
     )
 }

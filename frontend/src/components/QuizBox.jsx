@@ -4,24 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 const QuizBox = () => {
 
-  const questions = [
-    {
-      question: "What is the capital of France?",
-      options: ["Berlin", "Madrid", "Paris", "Rome"],
-      correct: "Paris",
-    },
-    {
-      question: "Which planet is known as the Red Planet?",
-      options: ["Earth", "Mars", "Jupiter", "Venus"],
-      correct: "Mars",
-    },
-    {
-      question: "Who wrote 'To Kill a Mockingbird'?",
-      options: ["Harper Lee", "J.K. Rowling", "George Orwell", "Mark Twain"],
-      correct: "Harper Lee",
-    },
-  ];
-
   const navigate = useNavigate()
   
   return (

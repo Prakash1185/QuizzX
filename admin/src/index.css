@@ -7,3 +7,6 @@
 body {
   @apply bg-light;
 }
+::-webkit-scrollbar {
+  @apply hidden;
+}
