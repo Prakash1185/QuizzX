@@ -3,7 +3,7 @@ import QuizBox from '../components/QuizBox'
 
 const QuizzesPage = () => {
   return (
-   <div className='flex flex-col items-center  justify-center -my-6  sm:py-10 md:py-16 -space-y-16 gap-28'>
+   <div className='flex flex-col items-center  justify-center -my-6  sm:py-10 md:py-16 -space-y-16 gap-2'>
     <QuizBox/>
     <QuizBox/>
     <QuizBox/>
