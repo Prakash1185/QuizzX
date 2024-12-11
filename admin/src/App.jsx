@@ -17,7 +17,7 @@ const App = () => {
         <div className="flex items-start">
         <Sidebar/>
         <Routes>
-                <Route path="/" element={<Navigate to="/admin/login" />} />
+                <Route path="/" element={<Navigate to="/admin/home" />} />
                 <Route path="/admin/home" element={<AdminHomePage />} />
                 <Route path="/admin/login" element={<AdminLoginPage />} />
                 <Route path="/admin/all-quizzes" element={<AdminAllQuizzesPage />} />
