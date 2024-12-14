@@ -22,4 +22,4 @@ const checkAuthenticated = (req, res, next) => {
     }
 };
 
-export { checkAuthenticated };
+export default checkAuthenticated ;

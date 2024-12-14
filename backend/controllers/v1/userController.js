@@ -87,6 +87,9 @@ export const getUserById = async (req, res) => {
 
     try {
         const user = await UserModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
         res.status(200).json({ success: true, user });
     } catch (error) {
         console.log(error);
@@ -130,16 +133,17 @@ export const deleteUserById = async (req, res) => {
 
 // function to store all the selected options by the user in the array in optionsSelected field in the user model also add the quizId in the quizzAtempted field
 export const storeSelectedOptions = async (req, res) => {
-    const { userId, quizId, optionsSelected } = req.body;
+    const { userId, optionsSelected } = req.body;
+    const { quizId } = req.params;
 
-    if (!userId || !quizId || !optionsSelected) {
+    if (!quizId || !userId || !optionsSelected) {
         return res.status(400).json({ success: false, message: "All fields are required" });
     }
 
     try {
         const user = await UserModel.findById(userId);
-        user.optionSelected.push({ quizId, optionsSelected });
-        user.quizzAtempted += 1;
+        user.optionsSelected.push({ quizId, optionsSelected });
+        // user.quizzAtempted += 1;
         await user.save();
 
         res.status(200).json({ success: true, message: "Options selected", user });
@@ -151,7 +155,9 @@ export const storeSelectedOptions = async (req, res) => {
 
 // update the score of the user in score field in the user model
 export const updateScore = async (req, res) => {
-    const { userId, score } = req.body;
+    const { userId } = req.params;
+    const { score } = req.body;
+    // const { userId,score } = req.body;
 
     if (!userId || !score) {
         return res.status(400).json({ success: false, message: "All fields are required" });
@@ -225,7 +231,7 @@ export const addQuizAttempted = async (req, res) => {
 
     try {
         const user = await UserModel.findById(userId);
-        user.quizzAtempted.push(quizId);
+        user.quizzesAttempted.push(quizId);
         await user.save();
 
         res.status(200).json({ success: true, message: "Quiz added", user });

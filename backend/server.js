@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
-import bodyParser from 'body-parser';
 import connectDB from './db/v1/db.js';
 import userRoutes from './routes/v1/userRoutes.js';
 import quizRoutes from './routes/v1/quizRoutes.js';

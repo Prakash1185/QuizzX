@@ -13,17 +13,17 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: new Date().toLocaleTimeString()
     },
-    quizzAtempted: {
-        type: Number,
-        default: 0
-    },
+    quizzesAttempted: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Quiz'
+    }],
     score: {
         type: Number,
         default: 0
     },
     optionsSelected: {
         type: Array,
-        default: ["No options selected"]
+        default: []
     },
 });
 

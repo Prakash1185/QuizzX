@@ -37,11 +37,11 @@ const adminLogin = async (req, res) => {
         // Generate a token
         // const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "1h" });
         const token = jwt.sign(
-            { id: user._id, isAdmin: user.isAdmin }, 
+            { id: process.env.ADMIN_ID, isAdmin: process.env.IS_ADMIN },
             process.env.JWT_SECRET,
             { expiresIn: '2h' }
-          );
-          
+        );
+
 
         return res.status(200).json({ token, success: true, message: "Admin logged in successfully" });
     } catch (error) {
