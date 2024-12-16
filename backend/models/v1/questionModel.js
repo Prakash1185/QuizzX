@@ -15,6 +15,11 @@ const questionSchema = new mongoose.Schema({
         ref: 'Option',
         required: true,
     },
+    quizId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Quiz',
+        required: true
+    },
     date: {
         type: Date,
         default: Date.now

@@ -14,7 +14,7 @@ quizRouter.get('/all-quizzes', adminMiddleware,getAllQuizzes);
 quizRouter.get('/user-quizzes', authMiddleware,getAllQuizzesForUser);
 quizRouter.get('/:quizId/questions', authMiddleware,getQuizQuestionsById);
 quizRouter.get('/question/:questionId', authMiddleware,getQuestionById);
-quizRouter.get('/quiz/:quizId', getQuizById);
+quizRouter.get('/:quizId',adminMiddleware, getQuizById);
 
 // Update routes
 quizRouter.put('/update-quiz/:quizId', adminMiddleware,updateQuiz);

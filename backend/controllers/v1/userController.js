@@ -175,37 +175,32 @@ export const updateScore = async (req, res) => {
     }
 };
 
-// Function to calculate the score of the user
+// Function to calculate the score of the user by running a loop over selectedoptions and correctoptions of the quiz model 
 export const calculateScore = async (req, res) => {
     const { userId, quizId } = req.params;
-
     try {
         const user = await UserModel.findById(userId).populate('optionsSelected');
         const quiz = await QuizModel.findById(quizId).populate('correctOptions');
-
         if (!user || !quiz) {
             return res.status(404).json({ success: false, message: "Something went wrong !" });
         }
-
         const correctOptions = quiz.correctOptions.map(option => option.toString());
         const selectedOptions = user.optionsSelected.map(option => option._id.toString());
-
         let score = 0;
         selectedOptions.forEach(option => {
             if (correctOptions.includes(option)) {
                 score += 1;
             }
         });
-
         user.score = score;
         await user.save();
-
         res.status(200).json({ success: true, message: "Score calculated", score });
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
 };
+
 
 // get the score of the user 
 export const getScore = async (req, res) => {

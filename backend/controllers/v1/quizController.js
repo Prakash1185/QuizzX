@@ -49,7 +49,7 @@ const createQuestion = async (req, res) => {
         // Find the ObjectId of the correct option
         const correctOptionId = optionIds[correctOption - 1]; // Assuming correctOption is 1-based index
 
-        // Create question with option ObjectIds
+        // Create question with option ObjectIds and quizId
         const newQuestion = new QuestionModel({
             question,
             options: optionIds,
@@ -58,7 +58,7 @@ const createQuestion = async (req, res) => {
         });
         await newQuestion.save();
 
-        // add the correct option ID to the quiz's correctOption array
+        // Add the correct option ID to the quiz's correctOptions array
         await QuizModel.findByIdAndUpdate(quizId, { $push: { correctOptions: correctOptionId } });
 
         // Add the new question to the quiz's questions array
@@ -98,7 +98,7 @@ const getQuizQuestionsById = async (req, res) => {
     const { quizId } = req.params;
 
     try {
-        const quiz = await Quiz
+        const quiz = await QuizModel
             .findById(quizId)
             .populate({ path: "questions", populate: { path: "options" } });
         res.status(200).json({ quiz, success: true });
@@ -117,6 +117,11 @@ const getQuestionById = async (req, res) => {
         const question = await QuestionModel
             .findById(questionId)
             .populate("options");
+
+        if (!question) {
+            return res.status(404).json({ message: "Question not found", success: false });
+        }
+
         res.status(200).json({ question, success: true });
     }
     catch (error) {
@@ -130,9 +135,13 @@ const getQuizById = async (req, res) => {
     const { quizId } = req.params;
 
     try {
-        const quiz = await Quiz
+        const quiz = await QuizModel
             .findById(quizId)
-            .populate({ path: "questions", populate: { path: "options" } });
+            .populate({ path: "questions", populate: { path: "options" } }).populate("correctOptions") ;
+        if (!quiz) {
+            return res.status(404).json({ message: "Quiz not found", success: false });
+        }
+            
         res.status(200).json({ quiz, success: true });
     }
     catch (error) {
@@ -146,9 +155,9 @@ const updateQuiz = async (req, res) => {
     const { title, description, bannerImage, questions, isActivated, attendes } = req.body;
     const { quizId } = req.params;
 
-    if (!title || !description || !bannerImage) {
-        return res.status(400).json({ message: "All fields are required" });
-    }
+    // if (!title || !description || !bannerImage) {
+    //     return res.status(400).json({ message: "All fields are required" });
+    // }
 
     try {
         await QuizModel.findByIdAndUpdate(quizId, {
@@ -168,18 +177,18 @@ const updateQuiz = async (req, res) => {
 
 // update the question details for admin for a particular question using questionId
 const updateQuestion = async (req, res) => {
-    const { question, option1, option2, option3, option4, correctOption } = req.body;
+    const { question, option1, option2, option3, option4, correctOption, quizId } = req.body;
     const { questionId } = req.params;
 
-    if (!question || !option1 || !option2 || !option3 || !option4 || !correctOption) {
-        return res.status(400).json({ message: "All fields are required" });
-    }
+    // if (!question || !option1 || !option2 || !option3 || !option4 || !correctOption || !quizId) {
+    //     return res.status(400).json({ message: "All fields are required" });
+    // }
 
     try {
         // Save options and get their ObjectIds
         const options = [option1, option2, option3, option4];
         const optionIds = await Promise.all(options.map(async (optionText) => {
-            const option = new OptionsModel({ text: optionText });
+            const option = new OptionsModel({ text: optionText, quizId });
             await option.save();
             return option._id;
         }));
@@ -187,11 +196,12 @@ const updateQuestion = async (req, res) => {
         // Find the ObjectId of the correct option
         const correctOptionId = optionIds[correctOption - 1]; // Assuming correctOption is 1-based index
 
-        // Update question with option ObjectIds
+        // Update question with option ObjectIds and quizId
         await QuestionModel.findByIdAndUpdate(questionId, {
             question,
             options: optionIds,
-            correctOption: correctOptionId
+            correctOption: correctOptionId,
+            quizId
         });
 
         res.status(200).json({ message: "Question updated", success: true });
@@ -200,6 +210,7 @@ const updateQuestion = async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message, success: false });
     }
 };
+
 
 // delete the quiz for admin with help of quizID
 const deleteQuiz = async (req, res) => {

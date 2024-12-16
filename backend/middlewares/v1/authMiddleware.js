@@ -1,25 +1,26 @@
 import jwt from 'jsonwebtoken';
-// checkAuthenticated middleware code 
+import UserModel from '../../models/v1/userModel.js';
 
-const checkAuthenticated = (req, res, next) => {
-    const auth = req.headers["authorization"];
-    if (!auth) {
-        return res.status(403).json({
-            message: "Unauthorized access denied",
-            success: false,
-        });
+const authMiddleware = async (req, res, next) => {
+    const token = req.headers['authorization'];
+
+    if (!token) {
+        return res.status(403).json({ success: false, message: 'Unauthorized access denied!' });
     }
-    try {
-        const decoded = jwt.verify(auth, process.env.JWT_SECRET);
-        req.user = decoded;
 
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await UserModel.findById(decoded.id);
+
+        if (!user || user.name !== decoded.name) {
+            return res.status(403).json({ success: false, message: 'Unauthorized access denied!' });
+        }
+
+        req.user = decoded;
         next();
     } catch (error) {
-        res.status(401).json({
-            message: "Internal Server Error",
-            success: false,
-        });
+        return res.status(500).json({ success: false, message: 'Something went wrong!', error: error.message });
     }
 };
 
-export default checkAuthenticated ;
+export default authMiddleware;

@@ -36,7 +36,7 @@ const quizSchema = new mongoose.Schema({
     },
     attendes: {
         type: Array,
-        default: ["No attendes"]
+        default: []
     },
 });
 

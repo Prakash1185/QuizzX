@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 
 dotenv.config();
 
+//! admin register not needed for registering admin as is done by another method
 // function to register admin using email,password and secret key for admin
 const adminRegister = async (req, res) => {
     const { email, password, secretKey } = req.body;
@@ -19,6 +20,7 @@ const adminRegister = async (req, res) => {
         return res.status(500).json({ error: error.message, success: false, message: "Something went wrong !" });
     }
 }
+
 
 // function to login admin using email,password and secret key and then generate a jwt token for admin
 const adminLogin = async (req, res) => {
