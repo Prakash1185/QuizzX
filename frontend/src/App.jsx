@@ -10,7 +10,7 @@ import AfterQuizSubmitPage from "./pages/AfterQuizSubmitPage";
 
 const App = () => {
   return (
-    <>
+    <div>
       <Navbar />
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />
@@ -23,7 +23,7 @@ const App = () => {
       </Routes>
       {/* <Footer /> */}
 
-    </>
+    </div>
   )
 }
 

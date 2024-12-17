@@ -40,11 +40,17 @@ const AttendQuizPage = () => {
   };
 
   return (
-    <div>
-      <div className="mx-10 sm:mx-20 md:mx-40 lg:mx-60 flex justify-center flex-col py-5">
+    <div className='w-[20rem] sm:w-[40rem] md:w-[55rem] lg:w-[75rem] mx-auto  '>
+
+<div className="fixed top-0 left-0 w-full h-full z-[-10] overflow-hidden ">
+          <div className="absolute top-28 left-2 w-40 h-40 bg-Ngreen rounded-full blur-[100px] animate-pulse opacity-50"></div>
+          <div className="absolute bottom-0 -right-5 w-56 h-56 bg-Ngreen rounded-full blur-[100px] animate-pulse opacity-50"></div>
+        </div>
+
+      <div className="mx-4 sm:mx-14 md:mx-40 lg:mx-60 flex justify-center flex-col py-5">
         {/* NAME OF THE QUIZ */}
-        <h1 className="bg-white border border-dark py-2.5 rounded-md text-3xl mx-auto px-1 md:px-2 lg:px-2.5 text-center font-medium mt-5 w-full">
-          Title of the quiz will go here
+        <h1 className="bg-finalDark border border-gray-500 border-opacity-80 py-3 rounded-md text-xl sm:text-2xl md:text-3xl mx-auto px-1 md:px-2 lg:px-2.5 text-center font-medium mt-5 w-full">
+          Mandatory Random Survey Quiz 2024
         </h1>
 
         {/* QUESTIONS OF THE QUIZ */}
@@ -58,7 +64,7 @@ const AttendQuizPage = () => {
         </div>
 
         {/* BUTTONS */}
-        <div className="  ">
+        <div className=" pb-7 md:pb-0 ">
           {currentQuestionIndex === questions.length - 1 ? (
             <div
               onClick={handleSubmit}
