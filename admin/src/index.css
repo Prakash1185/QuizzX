@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 body {
-  @apply bg-light;
+  @apply bg-dark2 text-white overflow-hidden;
 }
 ::-webkit-scrollbar {
   @apply hidden;

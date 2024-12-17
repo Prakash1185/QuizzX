@@ -12,7 +12,7 @@ const Navbar = () => {
             QuizzX
           </h1>
         </div>
-        <div className='hidden sm:block group'>
+        <div onClick={()=>navigate('/all-quizzes')} className='hidden sm:block group'>
          <ExploreQuizzes/>
         </div>
         {/* <div className='md:hidden'>
