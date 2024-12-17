@@ -12,8 +12,8 @@ const HomePage = () => {
 
         {/* Background Shapes with Blur */}
         <div className="absolute  top-0 left-0 w-full h-full z-[-10] overflow-hidden">
-          <div className="absolute top-28 left-2 w-40 h-40 bg-Ngreen rounded-full blur-[100px] animate-pulse opacity-50"></div>
-          <div className="absolute bottom-0 -right-5 w-40 h-40 md:w-56 md:h-56 bg-Ngreen rounded-full blur-[100px] animate-pulse opacity-50"></div>
+          <div className="absolute top-28 left-2 w-40 h-40 bg-Ngreen rounded-full blur-[85px] animate-pulse opacity-50"></div>
+          <div className="absolute bottom-0 -right-5 w-40 h-40 md:w-56 md:h-56 bg-Ngreen rounded-full blur-[85px] animate-pulse opacity-50"></div>
         </div>
 
 

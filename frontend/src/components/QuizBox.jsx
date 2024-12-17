@@ -7,7 +7,7 @@
     const navigate = useNavigate()
     
     return (
-      <div className='scale-[75%]  min-[550px]:scale-[80%] sm:scale-100'>
+      <div className='scale-[77%]  min-[550px]:scale-[80%] sm:scale-100'>
         <div className=' md:w-[50rem] md:h-[18rem] bg-finalDark border-opacity-80 rounded-md border   border-gray-500 md:flex-row flex-col flex gap-3 items-center  justify-center'>
           
           <div id="left" className='w-[25rem] h-[17rem] md:h-[16rem]'>
@@ -15,7 +15,7 @@
           </div>
           <div id="right"  className='w-[23rem] py-2.5 px-1.5 mx-auto md:mx-0'>
             <h1 className='text-3xl font-medium md:tracking-tight text-center md:text-start px-1 md:px-0 tracking-tighter'>Title of the quiz will go here</h1>  
-            <p className='text-sm text-gray-500 py-3 text-center tracking-tight md:tracking-normal md:text-start'>some extra details about the quiz will go here like username and links etc. some extra details about the quiz will go here like username and links etc</p>
+            <p className='px-1.5 text-gray-500 py-3 text-center tracking-tight md:tracking-normal md:text-start'>some extra details about the quiz will go here like username and links etc. some extra details about the quiz will go here like username and links etc</p>
             <div onClick={()=>navigate(`/create-account`)} className='md:pt-6 lg:pt-16 pt-4  text-center hover:cursor-pointer  md:pr-5 pb-2 md:pb-0'>
               <EnterQuiz/>
             </div>

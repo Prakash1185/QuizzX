@@ -9,10 +9,10 @@ const AfterQuizSubmitPage = () => {
     <div className="relative max-h-screen flex flex-col gap-1 items-center pt-24 md:pt-28 bg-light text-dark">
 
       {/* Background Shapes with Blur (same as HomePage) */}
-      <div className="fixed top-0 left-0 w-full h-full z-[-10] overflow-hidden">
-        <div className="absolute top-28 left-2 w-40 h-40 bg-Ngreen rounded-full blur-[100px] animate-pulse opacity-50"></div>
-        <div className="absolute bottom-0 -right-5 w-56 h-56 bg-Ngreen rounded-full blur-[100px] animate-pulse opacity-50"></div>
-      </div>
+      <div className="fixed  top-0 left-0 w-full h-full z-[-10] overflow-hidden">
+          <div className="absolute top-28 left-2 w-40 h-40 bg-Ngreen rounded-full blur-[85px] animate-pulse opacity-50"></div>
+          <div className="absolute bottom-0 -right-5 w-40 h-40 md:w-56 md:h-56 bg-Ngreen rounded-full blur-[85px] animate-pulse opacity-50"></div>
+        </div>
 
       {/* Content Section */}
       <h1 className="text-3xl md:text-4xl font-semibold text-gray-200 mb-4 text-center tracking-wide md:tracking-wider">Thank you!</h1>
