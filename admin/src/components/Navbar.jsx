@@ -16,6 +16,7 @@ const Navbar = () => {
 
 
   const handleLogout = () => {
+    localStorage.removeItem('token');
     setIsLoggedIn(false);
     navigate('/admin/login')
   }

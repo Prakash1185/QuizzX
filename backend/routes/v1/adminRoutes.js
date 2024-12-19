@@ -5,7 +5,7 @@ import { adminRegisterValidator } from './../../validation/v1/adminValidator.js'
 const adminRouter = Router();
 
 // route to register admin
-adminRouter.post("/register", adminRegisterValidator,adminRegister);
+// adminRouter.post("/register", adminRegisterValidator,adminRegister);
 
 // route to login admin
 adminRouter.post("/login", adminLogin);

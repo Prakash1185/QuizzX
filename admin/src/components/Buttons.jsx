@@ -24,7 +24,7 @@ export const BlueBadge = ({ text }) => {
 }
 export const RedBadge = ({ text }) => {
     return (
-        <button className=" bg-red-800 bg-opacity-50 text-red-300 rounded-md text-sm font-medium tracking-wide px-3.5 py-1 ">
+        <button className=" bg-red-800 bg-opacity-50 text-red-300 rounded-md text-xs font-medium tracking-wide px-3.5 py-1 ">
             {text}
         </button>
     )
@@ -61,9 +61,9 @@ export const QuizActions = ({ text }) => {
     )
 }
 
-export const ManageQuiz = ({ text }) => {
+export const ManageQuiz = ({ text, id }) => {
     return (
-        <Link to="/admin/quiz/:id/manage">
+        <Link to={`/admin/quiz/${id}/manage`}>
             <button className="bg-blue-700  hover:bg-blue-800 transition-all duration-200 py-3 px-10 text-lg text-white rounded-md font-semibold w-[22rem]">
                 {text}
             </button>
@@ -78,9 +78,9 @@ export const ActivateQuiz = ({ text }) => {
     )
 }
 
-export const Leaderboard = ({ text }) => {
+export const Leaderboard = ({ text, id }) => {
     return (
-        <Link to="/admin/quiz/:id/leaderboard">
+        <Link to={`/admin/quiz/${id}/leaderboard`}>
             <button className="bg-purple-700  hover:bg-purple-800 transition-all duration-200 py-3 px-10 text-lg text-white w-[22rem] rounded-md font-semibold">
                 {text}
             </button>

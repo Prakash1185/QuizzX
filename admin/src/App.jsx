@@ -15,6 +15,9 @@ import ManageQuestionPage from './pages/ManageQuestionPage';
 import CreateQuestionPage from './pages/CreateQuestionPage';
 import EditQuestionPage from './pages/EditQuestionPage';
 import LeaderboardPage from "./pages/LeaderboardPage";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const App = () => {
 
@@ -38,15 +41,16 @@ const App = () => {
                     <Route path="/admin/login" element={<AdminLoginPage />} />
                     <Route path="/admin/all-quizzes" element={<AdminAllQuizzesPage />} />
                     <Route path="/admin/create-quiz" element={<CreateQuizPage />} />
-                    <Route path="/admin/edit-quiz/:id" element={<EditQuizPage />} />
+                    <Route path="/admin/edit-quiz/:quizId" element={<EditQuizPage />} />
                     <Route path="/admin/users-list" element={<ShowAllUsersPage />} />
-                    <Route path="/admin/quiz/:id/manage" element={<QuizDetailsPage />} />
-                    <Route path="/admin/quiz/:id/leaderboard" element={<LeaderboardPage />} />
-                    <Route path="/admin/quiz/:id/manage-questions" element={<ManageQuestionPage />} />
-                    <Route path="/admin/quiz/:id/add-question" element={<CreateQuestionPage />} />
-                    <Route path="/admin/quiz/:id/edit-question/:qnId" element={<EditQuestionPage />} />
+                    <Route path="/admin/quiz/:quizId/manage" element={<QuizDetailsPage />} />
+                    <Route path="/admin/quiz/:quizId/leaderboard" element={<LeaderboardPage />} />
+                    <Route path="/admin/quiz/:quizId/manage-questions" element={<ManageQuestionPage />} />
+                    <Route path="/admin/quiz/:quizId/add-question" element={<CreateQuestionPage />} />
+                    <Route path="/admin/quiz/:quizId/edit-question/:questionId" element={<EditQuestionPage />} />
                     <Route path="*" element={<ErrorPage />} />
                 </Routes>
+                <ToastContainer theme="dark"/>
             </div>
         </div>
     )

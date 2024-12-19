@@ -6,23 +6,25 @@ import authMiddleware from '../../middlewares/v1/authMiddleware.js';
 const quizRouter = Router();
 
 // Create routes
-quizRouter.post('/create-quiz', adminMiddleware,QuizValidator, createQuiz);
-quizRouter.post('/:quizId/add-question', adminMiddleware,createQuestion);
+quizRouter.post('/create-quiz', adminMiddleware, QuizValidator, createQuiz);
+quizRouter.post('/:quizId/add-question', adminMiddleware, createQuestion);
 
 // Read routes
-quizRouter.get('/all-quizzes', adminMiddleware,getAllQuizzes);
-quizRouter.get('/user-quizzes', authMiddleware,getAllQuizzesForUser);
-quizRouter.get('/:quizId/questions', authMiddleware,getQuizQuestionsById);
-quizRouter.get('/question/:questionId', authMiddleware,getQuestionById);
-quizRouter.get('/:quizId',adminMiddleware, getQuizById);
+quizRouter.get('/all-quizzes', adminMiddleware, getAllQuizzes);
+quizRouter.get('/user-quizzes', authMiddleware, getAllQuizzesForUser);
+quizRouter.get('/:quizId/questions', authMiddleware, getQuizQuestionsById);
+quizRouter.get('/:quizId/questions/admin', adminMiddleware, getQuizQuestionsById);
+quizRouter.get('/question/:questionId', authMiddleware, getQuestionById);
+quizRouter.get('/question/:questionId/admin', adminMiddleware, getQuestionById);
+quizRouter.get('/:quizId', adminMiddleware, getQuizById);
 
 // Update routes
-quizRouter.put('/update-quiz/:quizId', adminMiddleware,updateQuiz);
-quizRouter.put('/update-question/:questionId', adminMiddleware,updateQuestion);
-quizRouter.put('/update-status/:quizId', adminMiddleware,updateQuizStatus);
+quizRouter.put('/update-quiz/:quizId', adminMiddleware, updateQuiz);
+quizRouter.put('/:quizId/update-question/:questionId', adminMiddleware, updateQuestion);
+quizRouter.put('/update-status/:quizId', adminMiddleware, updateQuizStatus);
 
 // Delete routes
-quizRouter.delete('/delete-quiz/:quizId', adminMiddleware,deleteQuiz);
-quizRouter.delete('/delete-question/:questionId', adminMiddleware,deleteQuestion);
+quizRouter.delete('/delete-quiz/:quizId', adminMiddleware, deleteQuiz);
+quizRouter.delete('/delete-question/:questionId', adminMiddleware, deleteQuestion);
 
 export default quizRouter;

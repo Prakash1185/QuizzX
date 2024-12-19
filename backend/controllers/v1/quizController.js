@@ -4,9 +4,10 @@ import OptionsModel from "../../models/v1/optionsModel.js";
 
 // Create a quiz 
 const createQuiz = async (req, res) => {
-    const { title, description, bannerImage, questions, isActivated, attendes } = req.body;
+    const { title, description, bannerImage, questions, isActivated, questionTimeLimit, quizTimeLimit } = req.body;
 
-    if (!title || !description || !bannerImage) {
+    if (!title || !description || !bannerImage ||
+        !questionTimeLimit || !quizTimeLimit) {
         return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -17,7 +18,8 @@ const createQuiz = async (req, res) => {
             bannerImage,
             questions,
             isActivated,
-            attendes
+            questionTimeLimit,
+            quizTimeLimit
         });
         await quiz.save();
         res.status(201).json({ message: "Quiz created", quiz, success: true });
@@ -97,6 +99,7 @@ const getAllQuizzesForUser = async (req, res) => {
 const getQuizQuestionsById = async (req, res) => {
     const { quizId } = req.params;
 
+
     try {
         const quiz = await QuizModel
             .findById(quizId)
@@ -137,11 +140,11 @@ const getQuizById = async (req, res) => {
     try {
         const quiz = await QuizModel
             .findById(quizId)
-            .populate({ path: "questions", populate: { path: "options" } }).populate("correctOptions") ;
+            .populate({ path: "questions", populate: { path: "options" } }).populate("correctOptions");
         if (!quiz) {
             return res.status(404).json({ message: "Quiz not found", success: false });
         }
-            
+
         res.status(200).json({ quiz, success: true });
     }
     catch (error) {
@@ -152,7 +155,7 @@ const getQuizById = async (req, res) => {
 
 // update the quiz details for admin
 const updateQuiz = async (req, res) => {
-    const { title, description, bannerImage, questions, isActivated, attendes } = req.body;
+    const { title, description, bannerImage, questions, isActivated, attendes, quizTimeLimit, questionTimeLimit } = req.body;
     const { quizId } = req.params;
 
     // if (!title || !description || !bannerImage) {
@@ -166,7 +169,9 @@ const updateQuiz = async (req, res) => {
             bannerImage,
             questions,
             isActivated,
-            attendes
+            attendes,
+            quizTimeLimit,
+            questionTimeLimit
         });
         res.status(200).json({ message: "Quiz updated", success: true });
     } catch (error) {
@@ -177,12 +182,8 @@ const updateQuiz = async (req, res) => {
 
 // update the question details for admin for a particular question using questionId
 const updateQuestion = async (req, res) => {
-    const { question, option1, option2, option3, option4, correctOption, quizId } = req.body;
-    const { questionId } = req.params;
-
-    // if (!question || !option1 || !option2 || !option3 || !option4 || !correctOption || !quizId) {
-    //     return res.status(400).json({ message: "All fields are required" });
-    // }
+    const { question, option1, option2, option3, option4, correctOption } = req.body;
+    const { quizId, questionId } = req.params;
 
     try {
         // Save options and get their ObjectIds
@@ -246,7 +247,7 @@ const updateQuizStatus = async (req, res) => {
     const { isActivated } = req.body;
 
     try {
-        await QuizModel.findByIdAndUpdate(quizId, { isActivated });
+        await QuizModel.findByIdAndUpdate(quizId, { isActivated }, { new: true });
         res.status(200).json({ message: "Quiz status updated", success: true });
     }
     catch (error) {

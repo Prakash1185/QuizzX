@@ -15,22 +15,6 @@ const LeaderboardPage = () => {
             </div>
             <div className='flex flex-col gap-5 mt-5 w-[40rem] max-h-[calc(100vh-12rem)] overflow-y-auto'>
                 <UserBox />
-                <UserBox />
-                <UserBox />
-                <UserBox />
-                <UserBox />
-                <UserBox />
-                <UserBox />
-                <UserBox />
-                <UserBox />
-                <UserBox />
-                <UserBox />
-                <UserBox />
-                <UserBox />
-                <UserBox />
-                <UserBox />
-                <UserBox />
-
             </div>
         </div>
     )

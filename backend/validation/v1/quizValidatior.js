@@ -21,6 +21,9 @@ const QuizValidator = async (req, res, next) => {
             'string.max': 'Description should have a maximum length of 500',
             'any.required': 'Description is required'
         }),
+        quizTimeLimit: Joi.number().required(),
+        questionTimeLimit: Joi.number().required()
+
     });
 
     const { error } = schema.validate(req.body);
