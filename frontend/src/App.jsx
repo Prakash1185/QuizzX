@@ -8,6 +8,8 @@ import Footer from './components/Footer';
 import AttendQuizPage from './pages/AttendQuizPage';
 import AfterQuizSubmitPage from "./pages/AfterQuizSubmitPage";
 import LeaderboardPage from "./pages/LeaderboardPage";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (
@@ -17,14 +19,14 @@ const App = () => {
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/all-quizzes" element={<QuizzesPage />} />
-        <Route path="/create-account" element={<CreateAccountPage />} />
-        <Route path="/quiz/:id" element={<AttendQuizPage />} />
-        <Route path="/quiz/:id/leaderboard" element={<LeaderboardPage />} />
-        <Route path="/quiz/:id/success" element={<AfterQuizSubmitPage />} />
+        <Route path="/:quizId/create-account" element={<CreateAccountPage />} />
+        <Route path="/quiz/:quizId" element={<AttendQuizPage />} />
+        <Route path="/quiz/:quizId/leaderboard" element={<LeaderboardPage />} />
+        <Route path="/quiz/:quizId/success" element={<AfterQuizSubmitPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       {/* <Footer /> */}
-
+      <ToastContainer theme="dark" />
     </div>
   )
 }

@@ -15,6 +15,7 @@ export const generateRandomSuffix = (length = 3) => {
 // create account
 export const createAccount = async (req, res) => {
     const { name } = req.body;
+    const { quizId } = req.params;
 
     if (!name) {
         return res.status(400).json({ success: false, message: "Name is required" });
@@ -40,7 +41,8 @@ export const createAccount = async (req, res) => {
 
         // creating user
         const user = new UserModel({
-            name: uniqueName
+            name: uniqueName,
+            quizzesAttempted: [quizId]
         });
         await user.save();
 
@@ -55,10 +57,8 @@ export const createAccount = async (req, res) => {
         res.status(201).json({
             success: true,
             message: "User created",
-            user: {
-                id: user._id,
-                name: user.name,
-            },
+            id: user._id,
+            name: user.name,
             token
 
         });
@@ -225,8 +225,11 @@ export const addQuizAttempted = async (req, res) => {
     }
 
     try {
+        const quiz = await QuizModel.findById(quizId);
         const user = await UserModel.findById(userId);
+        quiz.attendes.push(userId);
         user.quizzesAttempted.push(quizId);
+        await quiz.save();
         await user.save();
 
         res.status(200).json({ success: true, message: "Quiz added", user });
@@ -249,3 +252,39 @@ export const getLeaderboard = async (req, res) => {
         res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
 }
+
+// Delete all users
+export const deleteAllUsers = async (req, res) => {
+    try {
+        // Proceed to delete all users without looking for an ObjectId in the request
+        await UserModel.deleteMany({});
+        res.status(200).json({ success: true, message: "All users deleted successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: "Server error", error: error.message });
+    }
+};
+
+export const addUserToAttendes = async (req, res) => {
+    const { quizId } = req.params;
+    const { userId } = req.body;
+
+    try {
+        // Find the quiz by ID
+        const quiz = await QuizModel.findById(quizId);
+        if (!quiz) {
+            return res.status(404).json({ success: false, message: 'Quiz not found' });
+        }
+
+        // Add the user ID to the attendes array if not already present
+        if (!quiz.attendes.includes(userId)) {
+            quiz.attendes.push(userId);
+            await quiz.save();
+        }
+
+        res.status(200).json({ success: true, message: 'User added to attendes', attendes: quiz.attendes });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server error', error: error.message });
+    }
+};

@@ -10,7 +10,7 @@ const QuizDetailsPage = () => {
 
   useEffect(() => {
     getQuizById(quizId);
-  }, [getQuizById, quizId]);
+  }, []);
 
   if (!quizInfo) {
     return (
@@ -22,7 +22,7 @@ const QuizDetailsPage = () => {
 
   return (
     <div className='mx-10 py-5'>
-      <div className='flex items-center gap-5 mb-5'>
+      <div className='flex items-center gap-5 mb-3'>
         <Link to={`/admin/all-quizzes`}>
           <button className='font-inter bg-gray-800 text-white py-2 px-5 rounded-md w-20'>
             Back
@@ -44,7 +44,9 @@ const QuizDetailsPage = () => {
 
         <p className='bg-dark2 border border-gray-500 border-opacity-20 rounded-md px-3 py-1'>Attendes : {Array.isArray(quizInfo.attendes) ? quizInfo.attendes.length : 0}</p>
 
-        <p className='bg-dark2 border border-gray-500 border-opacity-20 rounded-md px-3 py-1'>Activated : {quizInfo.isActivated ? 'Yes' : 'No'}</p>
+        <p className='bg-dark2 border border-gray-500 border-opacity-20 rounded-md px-3 py-1'>Entry Allowed : {quizInfo.isEntryAllowed ? 'Yes' : 'No'}</p>
+
+        <p className='bg-dark2 border border-gray-500 border-opacity-20 rounded-md px-3 py-1'>Showing Leaderboard : {quizInfo.showLeaderboard ? 'Yes' : 'No'}</p>
 
 
         <div className='flex items-center  py-5 gap-2'>

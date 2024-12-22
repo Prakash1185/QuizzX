@@ -10,12 +10,13 @@ const AdminContextProvider = (props) => {
     const [quizInfo, setQuizInfo] = useState({})
     const [questions, setQuestions] = useState([])
     const [questionInfo, setQuestionInfo] = useState({})
+    const [users, setUsers] = useState([])
 
     const navigate = useNavigate()
     const BackendURL = import.meta.env.VITE_BACKEND_URL
 
 
-    // function to get all the quizzes
+    //todo: function to get all the quizzes 
     const getAllQuizzes = async () => {
         try {
             const response = await fetch(`${BackendURL}/quiz/all-quizzes`, {
@@ -90,7 +91,7 @@ const AdminContextProvider = (props) => {
     }
 
     // Function to get a single question by ID
-    const getQuestionById = async ( questionId) => {
+    const getQuestionById = async (questionId) => {
         try {
             const response = await fetch(`${BackendURL}/quiz/question/${questionId}/admin`, {
                 method: "GET",
@@ -125,8 +126,12 @@ const AdminContextProvider = (props) => {
             const result = await response.json()
             const { success, message, users } = result
 
-            console.log(users);
-            
+            // console.log(users);
+
+            if (success) {
+                setUsers(users)
+            }
+
             if (!success) {
                 handleError(message)
             }
@@ -136,7 +141,7 @@ const AdminContextProvider = (props) => {
         }
     }
 
-    
+
 
     useEffect(() => {
         const token = localStorage.getItem('token')
@@ -146,7 +151,7 @@ const AdminContextProvider = (props) => {
         }
     }, [])
 
-    const value = { isLoggedIn, setIsLoggedIn, BackendURL, getAllQuizzes, getQuizById, quizInfo, getAllQuestions, questions, setQuestions, setQuizInfo, getQuestionById, questionInfo, setQuestionInfo , getAllUsers }
+    const value = { isLoggedIn, setIsLoggedIn, BackendURL, getAllQuizzes, getQuizById, quizInfo, getAllQuestions, questions, setQuestions, setQuizInfo, getQuestionById, questionInfo, setQuestionInfo, getAllUsers, users }
 
     return (
         <AdminContext.Provider value={value}>

@@ -4,12 +4,15 @@ import { ActivateQuiz, DeleteQuiz, Leaderboard, ManageQuiz, QuizActions, RedBadg
 import { AdminContext } from '../context/AdminContext'
 import { handleError, handleSuccess } from './ToastMessages'
 import { FaRegTrashCan } from 'react-icons/fa6'
+import { Link } from 'react-router-dom';
 
 const QuizBox = ({ bannerImage, attendes, date, quizTimeLimit, title, description, id, quizzes, setQuizzes }) => {
 
     const { getAllQuizzes, BackendURL } = useContext(AdminContext)
 
-    const [isActivated, setIsActivated] = useState(() => quizzes.find(quiz => quiz._id === id)?.isActivated);
+    // const [isActivated, setIsActivated] = useState(() => quizzes.find(quiz => quiz._id === id)?.isActivated);
+    const [isEntryAllowed, setIsEntryAllowed] = useState(() => quizzes.find(quiz => quiz._id === id)?.isEntryAllowed);
+    const [isSlowLeaderboard, setIsShowLeaderboard] = useState(() => quizzes.find(quiz => quiz._id === id)?.showLeaderboard);
 
     const handleDelete = async (id) => {
         try {
@@ -57,16 +60,47 @@ const QuizBox = ({ bannerImage, attendes, date, quizTimeLimit, title, descriptio
     }
 
     // function to activate quiz
-    const toggleQuizActivation = async () => {
+    // const toggleQuizActivation = async () => {
+    //     try {
+    //         const updatedStatus = !isActivated; // Toggle the status
+    //         const response = await fetch(`${BackendURL}/quiz/update-status/${id}`, {
+    //             method: "PUT",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 Authorization: localStorage.getItem("token"),
+    //             },
+    //             body: JSON.stringify({ isActivated: updatedStatus }),
+    //         });
+
+    //         const result = await response.json();
+    //         const { success, message } = result;
+
+    //         if (success) {
+    //             handleSuccess(message);
+    //             setIsActivated(updatedStatus); // Update local state
+    //             getAllQuizzes(); // Refresh the quiz list
+    //         } else {
+    //             handleError(message);
+    //         }
+    //     } catch (error) {
+    //         handleError(error);
+    //     }
+    // };
+
+    // function to start and stop quiz
+
+
+    const toggleEntryAllowed = async () => {
+
         try {
-            const updatedStatus = !isActivated; // Toggle the status
-            const response = await fetch(`${BackendURL}/quiz/update-status/${id}`, {
+            const updatedStatus = !isEntryAllowed; // Toggle the status
+            const response = await fetch(`${BackendURL}/quiz/update-entry/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: localStorage.getItem("token"),
                 },
-                body: JSON.stringify({ isActivated: updatedStatus }),
+                body: JSON.stringify({ isEntryAllowed: updatedStatus }),
             });
 
             const result = await response.json();
@@ -74,7 +108,35 @@ const QuizBox = ({ bannerImage, attendes, date, quizTimeLimit, title, descriptio
 
             if (success) {
                 handleSuccess(message);
-                setIsActivated(updatedStatus); // Update local state
+                setIsEntryAllowed(updatedStatus);
+                getAllQuizzes();
+            } else {
+                handleError(message);
+            }
+        } catch (error) {
+            handleError(error);
+        }
+    };
+
+    // function to show or hide leaderboard quiz
+    const toggleShowLeaderboard = async () => {
+        try {
+            const updatedStatus = !isSlowLeaderboard; // Toggle the status
+            const response = await fetch(`${BackendURL}/quiz/update-leaderboard-status/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: localStorage.getItem("token"),
+                },
+                body: JSON.stringify({ showLeaderboard: updatedStatus }),
+            });
+
+            const result = await response.json();
+            const { success, message } = result;
+
+            if (success) {
+                handleSuccess(message);
+                setIsShowLeaderboard(updatedStatus); // Update local state
                 getAllQuizzes(); // Refresh the quiz list
             } else {
                 handleError(message);
@@ -114,21 +176,44 @@ const QuizBox = ({ bannerImage, attendes, date, quizTimeLimit, title, descriptio
                 <div id="right" className='w-[23rem] py-2.5 px-1.5 md:px-2 mx-auto md:mx-0 flex flex-col justify-between '>
                     <div>
                         <h1 className='text-3xl font-medium md:tracking-tight text-center md:text-start px-1 md:px-0 tracking-tighter'>{title}</h1>
-                        <p className='text-sm text-gray-400 py-3 text-center tracking-tight md:tracking-normal md:text-start max-h-16 overflow-y-auto'>{description}</p>
+                        {/* <p className='text-sm text-gray-400 py-3 text-center tracking-tight md:tracking-normal md:text-start max-h-16 overflow-y-auto'>{description}</p> */}
                     </div>
                     <div className='flex flex-col gap-2.5'>
 
                         {/* <ActivateQuiz text={"Activate"} /> */}
-                        <h1
+                        {/* <h1
 
                             onClick={toggleQuizActivation}
                             className="bg-Ngreen hover:bg-Dgreen
                                  transition-all duration-200 py-3 px-10 text-lg text-center text-white rounded-md font-semibold cursor-pointer"
                         >
                             {isActivated ? "Deactivate" : "Activate"}
+                        </h1> */}
+                        {/* Allow Entry */}
+                        <h1
+
+                            onClick={toggleEntryAllowed}
+                            className="bg-Ngreen hover:bg-Dgreen
+                                 transition-all duration-200 py-3 px-10 text-lg text-center text-white rounded-md font-semibold cursor-pointer"
+                        >
+                            {isEntryAllowed ? "Stop Quiz" : "Start Quiz"}
                         </h1>
-                        <Leaderboard id={id} text={"Leaderboard"} />
-                        <ManageQuiz id={id} text={"Manage"} />
+                        {/* Show leaderboard */}
+                        <h1
+
+                            onClick={toggleShowLeaderboard}
+                            className="bg-orange-700 hover:bg-orange-800
+                                 transition-all duration-200 py-3 px-10 text-lg text-center text-white rounded-md font-semibold cursor-pointer"
+                        >
+                            {isSlowLeaderboard ? "Hide Leaderboard" : "Show Leaderboard"}
+                        </h1>
+                        {/* <Leaderboard id={id} text={"Leaderboard"} /> */}
+                        <Link to={`/admin/quiz/${id}/leaderboard`}>
+                            <button className="bg-purple-700  hover:bg-purple-800 transition-all duration-200 py-3 px-10 text-lg text-white w-[22rem] rounded-md font-semibold">
+                                Manage Leaderboard
+                            </button>
+                        </Link>
+                        <ManageQuiz id={id} text={"Manage Quiz"} />
                     </div>
                 </div>
 

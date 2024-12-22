@@ -87,7 +87,7 @@ const getAllQuizzes = async (req, res) => {
 // get all the quizess and answers only with basic details like needed for user frontend
 const getAllQuizzesForUser = async (req, res) => {
     try {
-        const quizzes = await QuizModel.find({}, "title description bannerImage");
+        const quizzes = await QuizModel.find({}, "title description bannerImage isEntryAllowed showLeaderboard");
         res.status(200).json({ quizzes, success: true });
     } catch (error) {
         console.log(error);
@@ -95,7 +95,7 @@ const getAllQuizzesForUser = async (req, res) => {
     }
 };
 
-// get all the questions with their answers from the database for a particular quiz from quizId common for both admin and user
+// get all the questions with their answers from the database for a particular quiz from quizId for  admin 
 const getQuizQuestionsById = async (req, res) => {
     const { quizId } = req.params;
 
@@ -105,6 +105,47 @@ const getQuizQuestionsById = async (req, res) => {
             .findById(quizId)
             .populate({ path: "questions", populate: { path: "options" } });
         res.status(200).json({ quiz, success: true });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Server error", error: error.message, success: false });
+    }
+};
+
+// get all the questions with their options from the database for a particular quiz from quizId for  user 
+const getQuizQuestionsByIdForUsers = async (req, res) => {
+    const { quizId } = req.params;
+
+    try {
+        // Fetch quiz data with populated questions and options
+        const quiz = await QuizModel
+            .findById(quizId)
+            .populate({
+                path: "questions",
+                select: "_id question options questionTimeLimit title",  // Only get the question ID, question text, and options
+                populate: {
+                    path: "options",
+                    select: "_id text"  // Only get the option ID and option text
+                }
+            });
+
+        // Prepare a simplified response with the desired data
+        const simplifiedQuiz = {
+            _id: quiz._id,
+            questionTimeLimit: quiz.questionTimeLimit,
+            title: quiz.title,
+            questions: quiz.questions.map(question => ({
+                _id: question._id,
+                question: question.question,
+                options: question.options.map(option => ({
+                    _id: option._id,
+                    text: option.text
+                }))
+            }))
+        };
+
+        // Respond with the simplified data
+        res.status(200).json({ quiz: simplifiedQuiz, success: true });
     }
     catch (error) {
         console.log(error);
@@ -242,12 +283,30 @@ const deleteQuestion = async (req, res) => {
 }
 
 // update isActive status of the quiz
-const updateQuizStatus = async (req, res) => {
+// const updateQuizStatus = async (req, res) => {
+//     const { quizId } = req.params;
+//     const { isActivated } = req.body;
+
+//     try {
+//         await QuizModel.findByIdAndUpdate(quizId, { isActivated }, { new: true });
+//         res.status(200).json({ message: "Quiz status updated", success: true });
+//     }
+//     catch (error) {
+//         console.log(error);
+//         res.status(500).json({ message: "Server error", error: error.message, success: false });
+//     }
+// }
+
+// update isEntryAllowed status of the quiz
+const updateIsEntryStatus = async (req, res) => {
     const { quizId } = req.params;
-    const { isActivated } = req.body;
+    const { isEntryAllowed } = req.body;
+
+    // console.log("Quiz ID:", quizId);
+    // console.log("Request Body:", req.body);
 
     try {
-        await QuizModel.findByIdAndUpdate(quizId, { isActivated }, { new: true });
+        await QuizModel.findByIdAndUpdate(quizId, { isEntryAllowed }, { new: true });
         res.status(200).json({ message: "Quiz status updated", success: true });
     }
     catch (error) {
@@ -256,5 +315,21 @@ const updateQuizStatus = async (req, res) => {
     }
 }
 
+// update showLeaderboard status of the quiz
+const updateShowLeaderboardStatus = async (req, res) => {
+    const { quizId } = req.params;
+    const { showLeaderboard } = req.body;
+
+    try {
+        await QuizModel.findByIdAndUpdate(quizId, { showLeaderboard }, { new: true });
+        res.status(200).json({ message: "Leaderboard status updated", success: true });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Server error", error: error.message, success: false });
+    }
+}
+
+
 // exporting all the functions
-export { createQuiz, createQuestion, getAllQuizzes, getAllQuizzesForUser, getQuizQuestionsById, getQuestionById, getQuizById, updateQuiz, updateQuestion, deleteQuiz, deleteQuestion, updateQuizStatus };
+export { createQuiz, createQuestion, getAllQuizzes, getAllQuizzesForUser, getQuizQuestionsById, getQuestionById, getQuizById, updateQuiz, updateQuestion, deleteQuiz, deleteQuestion, updateIsEntryStatus, updateShowLeaderboardStatus, getQuizQuestionsByIdForUsers };

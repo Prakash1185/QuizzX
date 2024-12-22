@@ -24,6 +24,13 @@ export const EnterQuiz = () => {
         </button>
     )
 }
+export const Leaderboard = () => {
+    return (
+        <button className="bg-Ngreen hover:bg-Dgreen transition-all duration-300 py-3 px-[7.5rem] text-lg text-white rounded-md font-semibold">
+            Leaderboard
+        </button>
+    )
+}
 
 export const CreateAndStartQuiz = () => {
     return (

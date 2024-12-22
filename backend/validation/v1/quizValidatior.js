@@ -6,7 +6,7 @@ const QuizValidator = async (req, res, next) => {
             'string.base': 'Invalid title',
             'string.empty': 'Title is required',
             'string.min': 'Title should have a minimum length of 5',
-            'string.max': 'Title should have a maximum length of 100',
+            'string.max': 'Title should have a maximum length of 60',
             'any.required': 'Title is required'
         }),
         bannerImage: Joi.string().required().messages({

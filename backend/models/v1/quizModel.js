@@ -30,14 +30,22 @@ const quizSchema = new mongoose.Schema({
         type: String,
         default: new Date().toLocaleTimeString()
     },
-    isActivated: {
+    // isActivated: {
+    //     type: Boolean,
+    //     default: false
+    // },
+    isEntryAllowed: {
         type: Boolean,
         default: false
     },
-    attendes: {
-        type: Array,
-        default: []
+    showLeaderboard: {
+        type: Boolean,
+        default: false
     },
+    attendes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     questionTimeLimit: {
         type: Number,
         required: true
