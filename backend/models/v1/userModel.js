@@ -21,10 +21,10 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    optionsSelected: {
-        type: Array,
-        default: []
-    },
+    optionsSelected: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Option'
+    }],
 });
 
 const UserModel = mongoose.model('User', userSchema);

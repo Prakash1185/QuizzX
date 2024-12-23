@@ -3,7 +3,7 @@ import { handleError, handleSuccess } from './ToastMessages'
 import { AdminContext } from '../context/AdminContext'
 import { useContext } from 'react'
 
-const CompleteUserDetails = ({ name, score, date, id, time, getAllUsers }) => {
+const CompleteUserDetails = ({ name, score, date, id, time, getAllUsers, quizzesAttempted }) => {
 
     const { BackendURL } = useContext(AdminContext)
 
@@ -38,7 +38,7 @@ const CompleteUserDetails = ({ name, score, date, id, time, getAllUsers }) => {
             <h1>Name : {name}</h1>
             <h1>Score : {score}</h1>
             <h1>Created : {date} , {time}</h1>
-            {/* <h1>Quizzes Attempted : </h1> */}
+            <h1>Quizzes Attempted : {quizzesAttempted}</h1>
             <div>
                 <button onClick={() => handleUserDelete(id)} className='border border-red-600 text-red-600 hover:bg-red-600 hover:text-white mt-2 mb-1 transition-all duration-300 px-3 py-1 rounded-md'>Delete</button>
             </div>

@@ -3,7 +3,7 @@ import { createQuestion, createQuiz, deleteQuestion, deleteQuiz, getAllQuizzes, 
 import { QuizValidator } from '../../validation/v1/quizValidatior.js';
 import adminMiddleware from '../../middlewares/v1/adminMiddleware.js';
 import authMiddleware from '../../middlewares/v1/authMiddleware.js';
-import { addUserToAttendes } from '../../controllers/v1/userController.js';
+import { addUserToAttendes, getAttendesDetails, getUsersByQuizId } from '../../controllers/v1/userController.js';
 const quizRouter = Router();
 
 // Create routes
@@ -18,6 +18,8 @@ quizRouter.get('/:quizId/questions/admin', adminMiddleware, getQuizQuestionsById
 quizRouter.get('/question/:questionId', authMiddleware, getQuestionById);
 quizRouter.get('/question/:questionId/admin', adminMiddleware, getQuestionById);
 quizRouter.get('/:quizId', adminMiddleware, getQuizById);
+
+
 
 // Update routes
 quizRouter.put('/update-quiz/:quizId', adminMiddleware, updateQuiz);

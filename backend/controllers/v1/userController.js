@@ -132,23 +132,51 @@ export const deleteUserById = async (req, res) => {
 };
 
 // function to store all the selected options by the user in the array in optionsSelected field in the user model also add the quizId in the quizzAtempted field
+// export const storeSelectedOptions = async (req, res) => {
+//     const { userId, optionsSelected } = req.body;
+//     const { quizId } = req.params;
+
+//     if (!quizId || !userId || !optionsSelected) {
+//         return res.status(400).json({ success: false, message: "All fields are required" });
+//     }
+
+//     try {
+//         const user = await UserModel.findById(userId);
+//         user.optionsSelected.push({ quizId, optionsSelected });
+//         // user.quizzAtempted += 1;
+//         await user.save();
+
+//         res.status(200).json({ success: true, message: "Options selected", user });
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json({ success: false, message: "Server error", error: error.message });
+//     }
+// };
+
 export const storeSelectedOptions = async (req, res) => {
     const { userId, optionsSelected } = req.body;
     const { quizId } = req.params;
 
-    if (!quizId || !userId || !optionsSelected) {
-        return res.status(400).json({ success: false, message: "All fields are required" });
+    if (!quizId || !userId || !Array.isArray(optionsSelected)) {
+        return res.status(400).json({ success: false, message: "Invalid input data" });
     }
 
     try {
         const user = await UserModel.findById(userId);
-        user.optionsSelected.push({ quizId, optionsSelected });
-        // user.quizzAtempted += 1;
+
+        // Add quizId to quizzesAttempted
+        if (!user.quizzesAttempted.includes(quizId)) {
+            user.quizzesAttempted.push(quizId);
+        }
+
+        // Add selected options
+        user.optionsSelected = [...user.optionsSelected, ...optionsSelected];
+
         await user.save();
 
-        res.status(200).json({ success: true, message: "Options selected", user });
+        res.status(200).json({ success: true, message: "Options saved successfully", user });
     } catch (error) {
-        console.log(error);
+        console.error('Error saving options:', error);
         res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
 };
@@ -176,31 +204,69 @@ export const updateScore = async (req, res) => {
 };
 
 // Function to calculate the score of the user by running a loop over selectedoptions and correctoptions of the quiz model 
+// export const calculateScore = async (req, res) => {
+//     const { userId, quizId } = req.params;
+//     try {
+//         const user = await UserModel.findById(userId).populate('optionsSelected');
+//         const quiz = await QuizModel.findById(quizId).populate('correctOptions');
+//         if (!user || !quiz) {
+//             return res.status(404).json({ success: false, message: "Something went wrong !" });
+//         }
+//         const correctOptions = quiz.correctOptions.map(option => option.toString());
+//         const selectedOptions = user.optionsSelected.map(option => option._id.toString());
+//         let score = 0;
+//         selectedOptions.forEach(option => {
+//             if (correctOptions.includes(option)) {
+//                 score += 1;
+//             }
+//         });
+//         user.score = score;
+//         await user.save();
+//         res.status(200).json({ success: true, message: "Score calculated", score });
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json({ success: false, message: "Server error", error: error.message });
+//     }
+// };
+
 export const calculateScore = async (req, res) => {
-    const { userId, quizId } = req.params;
+    const { quizId } = req.params;
+    const { userId } = req.body;
+
     try {
-        const user = await UserModel.findById(userId).populate('optionsSelected');
-        const quiz = await QuizModel.findById(quizId).populate('correctOptions');
-        if (!user || !quiz) {
-            return res.status(404).json({ success: false, message: "Something went wrong !" });
+        const user = await UserModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
         }
-        const correctOptions = quiz.correctOptions.map(option => option.toString());
-        const selectedOptions = user.optionsSelected.map(option => option._id.toString());
+
+        const quiz = await QuizModel.findById(quizId).populate('questions');
+        if (!quiz) {
+            return res.status(404).json({ success: false, message: 'Quiz not found' });
+        }
+
         let score = 0;
-        selectedOptions.forEach(option => {
-            if (correctOptions.includes(option)) {
-                score += 1;
-            }
+        user.optionsSelected.forEach((selectedOption) => {
+            quiz.questions.forEach((question) => {
+                if (question.correctOption && question.correctOption.toString() === selectedOption.toString()) {
+                    score += question.points || 0; // Assuming each question has a points field
+                }
+            });
         });
+
+        // Ensure score is a valid number
+        if (isNaN(score)) {
+            score = 0;
+        }
+
         user.score = score;
         await user.save();
-        res.status(200).json({ success: true, message: "Score calculated", score });
+
+        res.status(200).json({ success: true, score: user.score });
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ success: false, message: "Server error", error: error.message });
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server error', error: error.message });
     }
 };
-
 
 // get the score of the user 
 export const getScore = async (req, res) => {
@@ -283,6 +349,66 @@ export const addUserToAttendes = async (req, res) => {
         }
 
         res.status(200).json({ success: true, message: 'User added to attendes', attendes: quiz.attendes });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server error', error: error.message });
+    }
+};
+
+// function to get all the users from attendee of the quiz with their name and score and id only
+export const getAttendes = async (req, res) => {
+    const { quizId } = req.params;
+
+    try {
+        const quiz = await QuizModel.findById(quizId).populate('attendes');
+        if (!quiz) {
+            return res.status(404).json({ success: false, message: 'Quiz not found' });
+        }
+
+        // Extract only the required fields from the users
+        const attendes = quiz.attendes.map(user => ({
+            id: user._id,
+            name: user.name,
+            score: user.score
+        }));
+
+        res.status(200).json({ success: true, attendes });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server error', error: error.message });
+    }
+
+}
+
+//function to get all the users from attendee of the quiz 
+export const getAttendesDetails = async (req, res) => {
+    const { quizId } = req.params;
+
+    try {
+        const quiz = await QuizModel.findOne({ _id: quizId }).populate('attendes');
+        if (!quiz) {
+            return res.status(404).json({ success: false, message: 'Quiz not found' });
+        }
+
+        res.status(200).json({ success: true, attendes: quiz.attendes });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server error', error: error.message });
+    }
+};
+
+// Function to get all users who have the specified quizId in their quizzesAttempted field
+export const getUsersByQuizId = async (req, res) => {
+    const { quizId } = req.params;
+    console.log(quizId);
+
+    try {
+        const users = await UserModel.find({ quizzesAttempted: quizId }).select('name score _id').sort({ score: -1 });
+        if (!users.length) {
+            return res.status(404).json({ success: false, message: 'No users found' });
+        }
+        res.status(200).json({ success: true, users });
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: 'Server error', error: error.message });

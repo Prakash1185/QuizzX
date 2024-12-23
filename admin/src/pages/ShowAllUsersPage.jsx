@@ -62,6 +62,7 @@ const ShowAllUsersPage = () => {
                   name={user.name}
                   score={user.score}
                   getAllUsers={getAllUsers}
+                  quizzesAttempted={user.quizzesAttempted.length}
                 />
               );
             })

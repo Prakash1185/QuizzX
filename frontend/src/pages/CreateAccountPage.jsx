@@ -5,6 +5,7 @@ import { handleError, handleSuccess } from '../components/ToastMessages';
 
 const CreateAccountPage = () => {
   const [accountInfo, setAccountInfo] = useState({ name: '' });
+  const [canNavigate, setCanNavigate] = useState(true); // New flag to track navigation
   const { isAccountCreated, setIsAccountCreated, BackendURL } = useContext(UserContext);
   const { quizId } = useParams();
   const navigate = useNavigate();
@@ -19,22 +20,20 @@ const CreateAccountPage = () => {
   // Mark the quiz as attempted
   const handleQuizAttempted = async () => {
     try {
+      console.log(userId);
+
       const response = await fetch(`${BackendURL}/user/add-quiz/${quizId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to mark quiz as attempted.');
-      }
-
       const result = await response.json();
       console.log('Quiz marked as attempted:', result);
     } catch (error) {
       console.error('Error in handleQuizAttempted:', error);
       handleError(error.message || 'Something went wrong while marking quiz as attempted.');
+      setCanNavigate(false); // Prevent navigation on error
     }
   };
 
@@ -55,10 +54,12 @@ const CreateAccountPage = () => {
         handleSuccess('User added to attendees.');
       } else {
         handleError(result.message || 'Failed to add user to attendees.');
+        setCanNavigate(false); // Prevent navigation on error
       }
     } catch (error) {
       console.error('Error in addUserToAttendees:', error);
       handleError(error.message || 'Something went wrong while adding user to attendees.');
+      setCanNavigate(false); // Prevent navigation on error
     }
   };
 
@@ -78,15 +79,8 @@ const CreateAccountPage = () => {
         body: JSON.stringify(accountInfo),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to create account.');
-      }
-
       const result = await response.json();
-      const { success, message, token, id } = result;
-
-      console.log('Account creation result:', result);
+      const { success, message, token, id, name } = result;
 
       if (success) {
         handleSuccess(message);
@@ -99,14 +93,19 @@ const CreateAccountPage = () => {
         await handleQuizAttempted();
         await addUserToAttendees();
 
-        setAccountInfo({ name: '' });
-        navigate(`/quiz/${quizId}`);
+        // If no error occurred, navigate
+        if (canNavigate) {
+          setAccountInfo({ name: '' });
+          navigate(`/quiz/${quizId}`);
+        }
       } else {
         handleError(message || 'Failed to create account.');
+        setCanNavigate(false); // Prevent navigation if account creation fails
       }
     } catch (error) {
       console.error('Error in handleCreateAccount:', error);
       handleError(error.message || 'Something went wrong while creating the account.');
+      setCanNavigate(false); // Prevent navigation on error
     }
   };
 

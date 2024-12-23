@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ActivateQuiz, DeleteQuiz, Leaderboard, ManageQuiz, QuizActions, RedBadge } from './Buttons'
+import { ActivateQuiz, DeleteQuiz, GreenBadge, Leaderboard, ManageQuiz, OrangeBadge, QuizActions, RedBadge } from './Buttons'
 import { AdminContext } from '../context/AdminContext'
 import { handleError, handleSuccess } from './ToastMessages'
 import { FaRegTrashCan } from 'react-icons/fa6'
@@ -156,10 +156,10 @@ const QuizBox = ({ bannerImage, attendes, date, quizTimeLimit, title, descriptio
                 <div id="left" className='w-[25rem] h-[17rem] md:h-[16rem]'>
                     <img src={bannerImage} className='h-full w-full object-cover  px-2.5 py-2.5 mb-1 rounded-[15px]' alt="" />
                     <div className='text-lg font-medium px-2.5 py-0.5 flex  justify-between flex-col md:flex-row items-end'>
-                        <div className='flex flex-col '>
+                        <div className='flex flex-col gap-0.5 '>
                             <p className=''>Attendes : {attendes}</p>
                             <p className=''>Created : {date}</p>
-                            <p className=''>Validity : {countdown > 0 ? formatTime(countdown) : <RedBadge text={"Expired"} />}</p>
+                            <p className=''>Status : {isEntryAllowed ? <GreenBadge text={"Active"} /> : <OrangeBadge text={"Not Active"} />}</p>
                         </div>
 
                         <div className='flex justify-end gap-2 mt-4'>

@@ -1,9 +1,46 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { GoToHomeButton } from '../components/Buttons'
 import UserBox from '../components/UserBox'
 import { Link } from 'react-router-dom'
+import { UserContext } from './../context/UserContext';
+import { useContext } from 'react';
+import { useParams } from 'react-router-dom';
+
+
+
 
 const LeaderboardPage = () => {
+
+    const [attendes, setAttendes] = useState([]);
+    const { BackendURL } = useContext(UserContext)
+    const { quizId } = useParams()
+
+    const getLeaderboard = async () => {
+        try {
+            const response = await fetch(`${BackendURL}/user/${quizId}/users`, {
+                method: 'GET',
+                headers: {
+                    Authorization: localStorage.getItem('token'),
+                },
+            });
+            const result = await response.json();
+            const { success, users } = result
+
+            if (success) {
+                setAttendes(users);
+                // console.log(attendes);
+            } else {
+                console.log(result.message);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getLeaderboard();
+    }, []);
+
     return (
         <div className="relative max-h-screen flex flex-col gap-1 items-center pt-10 md:pt-10 bg-light text-dark">
 
@@ -27,50 +64,15 @@ const LeaderboardPage = () => {
 
 
             <div className='gap-5 flex-col flex w-[90%] px-2 sm:w-[80%] md:w-[45rem] max-h-[calc(100vh-12rem)] overflow-y-auto '>
-                <div className='flex  items-center gap-2'>
-                    <h1 className='text-2xl'>1.</h1>
-                    <UserBox />
-                </div>
-                <div className='flex  items-center gap-2'>
-                    <h1 className='text-2xl'>1.</h1>
-                    <UserBox />
-                </div>
-                <div className='flex  items-center gap-2'>
-                    <h1 className='text-2xl'>1.</h1>
-                    <UserBox />
-                </div>
-                <div className='flex  items-center gap-2'>
-                    <h1 className='text-2xl'>1.</h1>
-                    <UserBox />
-                </div>
-                <div className='flex  items-center gap-2'>
-                    <h1 className='text-2xl'>1.</h1>
-                    <UserBox />
-                </div>
-                <div className='flex  items-center gap-2'>
-                    <h1 className='text-2xl'>1.</h1>
-                    <UserBox />
-                </div>
-                <div className='flex  items-center gap-2'>
-                    <h1 className='text-2xl'>1.</h1>
-                    <UserBox />
-                </div>
-                <div className='flex  items-center gap-2'>
-                    <h1 className='text-2xl'>1.</h1>
-                    <UserBox />
-                </div>
-                <div className='flex  items-center gap-2'>
-                    <h1 className='text-2xl'>1.</h1>
-                    <UserBox />
-                </div>
-                <div className='flex  items-center gap-2'>
-                    <h1 className='text-2xl'>1.</h1>
-                    <UserBox />
-                </div>
-                <div className='flex  items-center gap-2'>
-                    <h1 className='text-2xl'>1.</h1>
-                    <UserBox />
-                </div>
+                {
+                    attendes.map((attendee, index) => (
+                        <div key={attendee._id} className='flex  items-center gap-2'>
+                            <h1 className='text-2xl'>{index + 1}.</h1>
+                            <UserBox Name={attendee.name} Score={attendee.score} />
+                        </div>
+                    ))
+                }
+
             </div>
 
             {/* Home Button */}

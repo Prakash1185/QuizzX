@@ -50,7 +50,11 @@ const AdminAllQuizzesPage = () => {
               key={quiz._id}
               attendes={quiz.attendes.length}
               bannerImage={quiz.bannerImage}
-              date={new Date(quiz.date).toLocaleDateString()}
+              date={new Date(quiz.date).toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              })}
               description={quiz.description}
               id={quiz._id}
               quizTimeLimit={quiz.quizTimeLimit}
@@ -58,6 +62,7 @@ const AdminAllQuizzesPage = () => {
               getAllQuizzes={getAllQuizzes}
               setQuizzes={setQuizzes}
               quizzes={quizzes}
+              isEntryAllowed={quiz.isEntryAllowed}
             />
           ))
         ) : (

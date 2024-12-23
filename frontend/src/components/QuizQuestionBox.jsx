@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const QuizQuestionBox = ({ question, options, currentQuestionIndex, totalQuestions, questionTimeLimit , onTimeUp }) => {
+const QuizQuestionBox = ({ question, options, currentQuestionIndex, totalQuestions, questionTimeLimit, onTimeUp ,onOptionSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [timeLeft, setTimeLeft] = useState(questionTimeLimit);
 
@@ -21,7 +21,11 @@ const QuizQuestionBox = ({ question, options, currentQuestionIndex, totalQuestio
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
+    if (onOptionSelect) {
+      onOptionSelect(option._id); // Send the selected option's ID to the parent
+    }
   };
+
 
   return (
     <div className="bg-finalDark rounded-md border border-gray-500 border-opacity-80 px-5 py-3">

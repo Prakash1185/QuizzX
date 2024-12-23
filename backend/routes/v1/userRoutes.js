@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { addQuizAttempted, calculateScore, createAccount, deleteAllUsers, deleteUserById, getLeaderboard, getScore, getUserById, getUsers, storeSelectedOptions, updateScore, updateUserById } from '../../controllers/v1/userController.js';
+import { addQuizAttempted, calculateScore, createAccount, deleteAllUsers, deleteUserById, getAttendesDetails, getLeaderboard, getScore, getUserById, getUsers, getUsersByQuizId, storeSelectedOptions, updateScore, updateUserById } from '../../controllers/v1/userController.js';
 import { createAccountValidator } from '../../validation/v1/userValidator.js';
 import authMiddleware from '../../middlewares/v1/authMiddleware.js';
 import verifyUserId from '../../middlewares/v1/verifyUserIdMiddleware.js';
@@ -10,11 +10,15 @@ const userRouter = Router();
 userRouter.post('/create-account', createAccountValidator, createAccount);
 
 userRouter.delete('/delete', adminMiddleware, deleteAllUsers);
+
 // Read routes
 userRouter.get('/users', getUsers);
 userRouter.get('/:userId', getUserById);
 userRouter.get('/:userId/score', getScore);
-userRouter.get('/:quizId/leaderboard', getLeaderboard);
+userRouter.get('/:quizId/attendes', adminMiddleware, getAttendesDetails);
+userRouter.get('/:quizId/users', authMiddleware, getUsersByQuizId);
+// userRouter.get('/:quizId/leaderboard', getLeaderboard);
+// userRouter.get('/:quizId/leaderboard', getLeaderboard);
 
 // Update routes
 userRouter.put('/:userId', updateUserById);
@@ -24,7 +28,7 @@ userRouter.put('/add-quiz/:quizId', addQuizAttempted);
 
 // Delete routes
 
-userRouter.delete('/:userId', adminMiddleware,deleteUserById);
+userRouter.delete('/:userId', adminMiddleware, deleteUserById);
 
 // Calculate score route
 userRouter.put('/calculate-score/:quizId', calculateScore);

@@ -18,10 +18,10 @@ const quizSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Question'
     }],
-    correctOptions: {
+    correctOptions: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Option'
-    },
+    }],
     date: {
         type: Date,
         default: Date.now

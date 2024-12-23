@@ -13,6 +13,7 @@ const AttendQuizPage = () => {
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(60); // Set default time for each question
+  const [selectedOptions, setSelectedOptions] = useState([]);
   let timer; // Declare the timer outside of useEffect
 
   const getQuestionsForUser = async () => {
@@ -57,10 +58,6 @@ const AttendQuizPage = () => {
     }
   };
 
-  const handleSubmit = () => {
-    navigate(`/quiz/${quizId}/success`);
-  };
-
   const handleTimeUp = () => {
     if (currentQuestionIndex < questions.length - 1) {
       nextQuestion();
@@ -79,6 +76,68 @@ const AttendQuizPage = () => {
     return <div>Loading...</div>;
   }
 
+
+  // Function to handle option selection
+  const handleOptionSelect = (questionIndex, optionId) => {
+    const updatedSelections = [...selectedOptions];
+    updatedSelections[questionIndex] = optionId;
+    setSelectedOptions(updatedSelections);
+  };
+
+  // Submit the selected options to the backend
+  const handleSubmit = async () => {
+    try {
+      // Submit selected options first
+      const response = await fetch(`${BackendURL}/user/${quizId}/store-options`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: localStorage.getItem('token'),
+        },
+        body: JSON.stringify({
+          userId: localStorage.getItem('userId'),
+          optionsSelected: selectedOptions.filter((id) => id), // Filter out empty values
+        }),
+      });
+
+      const result = await response.json();
+      if (!result.success) {
+        return handleError(result.message || "Failed to save options");
+      }
+
+      // Calculate the score
+      const scoreResponse = await fetch(`${BackendURL}/user/calculate-score/${quizId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: localStorage.getItem('token'),
+        },
+        body: JSON.stringify({
+          userId: localStorage.getItem('userId'),
+        }),
+      });
+
+      const scoreResult = await scoreResponse.json();
+      const { success, message, score } = scoreResult;
+      if (success) {
+        handleSuccess(`Your score is ${score}`);
+        navigate(`/quiz/${quizId}/success`);
+        localStorage.removeItem('userId');
+        localStorage.removeItem('token');
+        localStorage.removeItem('name')
+      }
+      if (!success) {
+        return handleError(scoreResult.message || "Failed to calculate score");
+      }
+
+    } catch (error) {
+      console.error('Error in handleSubmit:', error);
+      handleError(error.message || "Server error");
+    }
+  };
+
+
+
   return (
     <div className='w-[20rem] sm:w-[40rem] md:w-[55rem] lg:w-[75rem] mx-auto'>
       <div className="fixed top-0 left-0 w-full h-full z-[-10] overflow-hidden">
@@ -96,8 +155,9 @@ const AttendQuizPage = () => {
               options={questions[currentQuestionIndex].options}
               currentQuestionIndex={currentQuestionIndex}
               totalQuestions={questions.length}
-              questionTimeLimit={quiz.questionTimeLimit} // Pass the questionTimeLimit
-              onTimeUp={handleTimeUp} // Pass the handleTimeUp function
+              questionTimeLimit={quiz.questionTimeLimit}
+              onTimeUp={handleTimeUp}
+              onOptionSelect={(optionId) => handleOptionSelect(currentQuestionIndex, optionId)}
             />
           )}
         </div>
