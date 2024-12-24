@@ -5,8 +5,12 @@
 @tailwind utilities;
 
 body {
-  @apply bg-dark2 text-white overflow-hidden;
+  @apply bg-dark2 text-white overflow-auto;
 }
 ::-webkit-scrollbar {
   @apply hidden;
+}
+html, body {
+  height: 100%;
+  overflow: auto;
 }

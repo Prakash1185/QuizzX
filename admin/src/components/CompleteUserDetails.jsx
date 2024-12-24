@@ -34,7 +34,7 @@ const CompleteUserDetails = ({ name, score, date, id, time, getAllUsers, quizzes
     }
 
     return (
-        <div className='bg-finalDark border border-gray-500 w-full px-5 py-1.5 bg-opacity-20 flex gap-1  rounded-md text-sm flex-col'>
+        <div className='bg-gray-800  border border-gray-500 w-full px-5 py-1.5 bg-opacity-10 border-opacity-60 flex gap-1  rounded-md text-sm flex-col'>
             <h1>Name : {name}</h1>
             <h1>Score : {score}</h1>
             <h1>Created : {date} , {time}</h1>

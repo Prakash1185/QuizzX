@@ -30,7 +30,7 @@ const QuizDetailsPage = () => {
         </Link>
         <h1 className='text-2xl font-medium'>Manage Quiz  </h1>
       </div>
-      <div className='bg-finalDark px-5 py-3 shadow-md rounded-md  flex flex-col gap-2 w-[40rem]  font-poppins '>
+      <div className='bg-finalDark px-5 py-3 shadow-md rounded-md  flex flex-col gap-2 md:w-[40rem]  font-poppins'>
 
         <p className='bg-dark2 border border-gray-500 border-opacity-20 rounded-md px-3 py-1'>{quizInfo.title}</p>
 
@@ -38,7 +38,7 @@ const QuizDetailsPage = () => {
 
         <p className='bg-dark2 border border-gray-500 border-opacity-20 rounded-md px-3 py-1'>Question Time Limit (in secs) : {quizInfo.questionTimeLimit}</p>
 
-        <p className='bg-dark2 border border-gray-500 border-opacity-20 rounded-md px-3 py-1'>Quiz Time Limit (in mins) : {quizInfo.quizTimeLimit}</p>
+        {/* <p className='bg-dark2 border border-gray-500 border-opacity-20 rounded-md px-3 py-1'>Quiz Time Limit (in mins) : {quizInfo.quizTimeLimit}</p> */}
 
         <p className='bg-dark2 border border-gray-500 border-opacity-20 rounded-md px-3 py-1'>Created : {`${new Date(quizInfo.date).toLocaleDateString()} and  ${new Date(quizInfo.date).toLocaleTimeString()}`}</p>
 
@@ -49,14 +49,14 @@ const QuizDetailsPage = () => {
         <p className='bg-dark2 border border-gray-500 border-opacity-20 rounded-md px-3 py-1'>Showing Leaderboard : {quizInfo.showLeaderboard ? 'Yes' : 'No'}</p>
 
 
-        <div className='flex items-center  py-5 gap-2'>
+        <div className='flex md:items-center flex-col md:flex-row  py-5 gap-2'>
           <Link to={`/admin/edit-quiz/${quizId}`}>
-            <button className='font-inter bg-Ngreen text-white py-2 px-5 rounded-md w-72'>
+            <button className='font-inter bg-Ngreen text-white py-2 px-5 rounded-md w-full md:w-72'>
               Edit Quiz
             </button>
           </Link>
           <Link to={`/admin/quiz/${quizId}/manage-questions`}>
-            <button className='font-inter bg-Ngreen text-white py-2 px-5 rounded-md w-72'>
+            <button className='font-inter bg-Ngreen text-white py-2 px-5 rounded-md w-full md:w-72'>
               Manage Questions
             </button>
           </Link>

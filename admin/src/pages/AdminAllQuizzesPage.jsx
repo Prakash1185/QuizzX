@@ -42,8 +42,8 @@ const AdminAllQuizzesPage = () => {
   }, [])
 
   return (
-    <div className='mx-10 py-10 max-h-[90vh] overflow-y-scroll'>
-      <div className='flex flex-col gap-10 '>
+    <div className='sm:mx-10 mx-auto sm:py-10 max-h-[90vh] overflow-y-scroll overflow-x-auto '>
+      <div className='flex flex-col  -space-y-20 sm:-space-y-0 sm:gap-16 -mt-5 sm:-mt-0'>
         {quizzes.length > 0 ? (
           quizzes.map((quiz) => (
             <QuizBox

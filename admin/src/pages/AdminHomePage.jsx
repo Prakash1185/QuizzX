@@ -3,7 +3,7 @@ import { CreateLogoBox, DeleteLogoBox, EditLogoBox, ReadLogoBox } from '../compo
 
 const AdminHomePage = () => {
   return (
-    <div className='mx-10'>
+    <div className='sm:mx-10 mx-5'>
       <div className=' py-5'>
         <p className='text-4xl font-poppins py-3'>Welcome to the Admin Panel of <span className='font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-green-500 to-green-700'>QuizzX</span></p>
       </div>

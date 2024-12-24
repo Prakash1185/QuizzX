@@ -150,19 +150,19 @@ const QuizBox = ({ bannerImage, attendes, date, quizTimeLimit, title, descriptio
 
 
     return (
-        <div className='scale-[75%]  min-[550px]:scale-[80%] sm:scale-100'>
-            <div className=' md:w-[50rem] md:h-[23rem] bg-finalDark bg-opacity-90 rounded-md border  border-gray-500 md:flex-row flex-col flex gap-3  justify-center border-opacity-85 px-2 py-1'>
+        <div className='scale-[80%]  min-[550px]:scale-[85%] sm:scale-100 '>
+            <div className='min-w-[26rem] sm:min-w-[28rem] md:w-[50rem]  md:h-[23.5rem] bg-finalDark bg-opacity-90 rounded-md border  border-gray-500 md:flex-row flex-col flex gap-32 md:gap-3  justify-center border-opacity-85 px-2 sm:py-1 py-2.5'>
 
-                <div id="left" className='w-[25rem] h-[17rem] md:h-[16rem]'>
-                    <img src={bannerImage} className='h-full w-full object-cover  px-2.5 py-2.5 mb-1 rounded-[15px]' alt="" />
-                    <div className='text-lg font-medium px-2.5 py-0.5 flex  justify-between flex-col md:flex-row items-end'>
+                <div id="left" className='w-[25rem] h-[17rem] md:h-[16rem] mx-auto '>
+                    <img src={bannerImage} className='h-full w-full object-cover px-2.5 py-2.5 mb-1 rounded-[15px]' alt="" />
+                    <div className='text-lg font-medium px-2.5 py-3 md:py-0.5 flex  justify-between flex-col md:flex-row md:items-end border-b border-gray-500 border-opacity-80 pb-5 md:border-none md:pb-0'>
                         <div className='flex flex-col gap-0.5 '>
                             <p className=''>Attendes : {attendes}</p>
                             <p className=''>Created : {date}</p>
                             <p className=''>Status : {isEntryAllowed ? <GreenBadge text={"Active"} /> : <OrangeBadge text={"Not Active"} />}</p>
                         </div>
 
-                        <div className='flex justify-end gap-2 mt-4'>
+                        <div className='flex justify-end gap-2 -mt-10 md:mt-4'>
                             <button
                                 className='border  border-red-600 text-red-600 hover:bg-red-600 transition-all duration-200 py-1.5 px-5 text-lg hover:text-white rounded-md font-semibold'
                                 onClick={() => handleDelete(id)}
@@ -173,12 +173,13 @@ const QuizBox = ({ bannerImage, attendes, date, quizTimeLimit, title, descriptio
                         </div>
                     </div>
                 </div>
-                <div id="right" className='w-[23rem] py-2.5 px-1.5 md:px-2 mx-auto md:mx-0 flex flex-col justify-between '>
+
+                <div id="right" className='w-[23rem] py-3.5 md:py-2.5 sm:px-1.5 md:px-2 mx-auto md:mx-0 flex flex-col justify-between  ' >
                     <div>
-                        <h1 className='text-3xl font-medium md:tracking-tight text-center md:text-start px-1 md:px-0 tracking-tighter'>{title}</h1>
+                        <h1 className='text-3xl font-medium md:tracking-tight text-center md:text-start sm:px-1 md:px-0 sm:tracking-tighter mb-4'>{title}</h1>
                         {/* <p className='text-sm text-gray-400 py-3 text-center tracking-tight md:tracking-normal md:text-start max-h-16 overflow-y-auto'>{description}</p> */}
                     </div>
-                    <div className='flex flex-col gap-2.5'>
+                    <div className='flex flex-col gap-2.5 sm:gap-3 md:gap-2.5 sm:pb-4 md:pb-0'>
 
                         {/* <ActivateQuiz text={"Activate"} /> */}
                         {/* <h1
@@ -209,7 +210,7 @@ const QuizBox = ({ bannerImage, attendes, date, quizTimeLimit, title, descriptio
                         </h1>
                         {/* <Leaderboard id={id} text={"Leaderboard"} /> */}
                         <Link to={`/admin/quiz/${id}/leaderboard`}>
-                            <button className="bg-purple-700  hover:bg-purple-800 transition-all duration-200 py-3 px-10 text-lg text-white w-[22rem] rounded-md font-semibold">
+                            <button className="bg-purple-700  hover:bg-purple-800 transition-all duration-200 py-3 px-10 text-lg text-white w-full sm:w-[22rem] rounded-md font-semibold">
                                 Manage Leaderboard
                             </button>
                         </Link>

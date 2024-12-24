@@ -3,7 +3,7 @@ import { FaRegTrashCan } from 'react-icons/fa6'
 import { AdminContext } from '../context/AdminContext'
 import { handleError, handleSuccess } from './ToastMessages'
 
-const UserBox = ({ Name, Score, id, getLeaderboard }) => {
+const UserBox = ({ Name, Score, id, getLeaderboard, index }) => {
 
     const { BackendURL } = useContext(AdminContext)
 
@@ -34,8 +34,9 @@ const UserBox = ({ Name, Score, id, getLeaderboard }) => {
     }
 
     return (
-        <div className='bg-finalDark border border-gray-500 w-full px-5 py-2 bg-opacity-20 flex items-center justify-around rounded-md text-lg'>
-            <div className='w-full'>
+        <div className=' bg-gray-800 w-full  px-4 py-3 rounded-md bg-opacity-20 flex items-center justify-around  text-xl'>
+            <div className='w-full flex gap-1 items-center'>
+                <h1 className="text-xl font-medium">{index + 1}.</h1>
                 <h1>{Name}</h1>
             </div>
             <div className='flex justify-between px-2 items-center gap-2 w-full'>

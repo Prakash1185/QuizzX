@@ -40,7 +40,7 @@ const LeaderboardPage = () => {
 
 
     return (
-        <div className='mx-10 py-5'>
+        <div className='mx-10 py-5 overflow-x-auto'>
             <div className='flex items-center gap-5'>
                 <Link to={`/admin/all-quizzes`}>
                     <button className='font-inter bg-gray-800 text-white py-2 px-5 rounded-md w-20'>
@@ -49,7 +49,7 @@ const LeaderboardPage = () => {
                 </Link>
                 <h1 className='text-2xl font-medium'>Leaderboard </h1>
             </div>
-            <div className='flex flex-col gap-5 mt-5 w-[40rem] max-h-[calc(100vh-12rem)] overflow-y-auto'>
+            <div className='flex flex-col gap-3 mt-5 w-[40rem] max-h-[calc(100vh-12rem)] overflow-y-auto'>
                 {attendes.map((attendee, index) => (
                     <UserBox key={attendee._id} Name={attendee.name} Score={attendee.score} id={attendee._id} index={index} getLeaderboard={getLeaderboard} />
                 ))}

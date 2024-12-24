@@ -72,7 +72,7 @@ const EditQuestionPage = () => {
       </div>
       {/* <h1 className=' text-3xl font-medium text-center  font-poppins'>Edit Question</h1> */}
       <div className=''>
-        <form className='flex mx-auto flex-col w-[60vw] gap-4 bg-finalDark px-5 py-5 rounded-md border shadow-md border-gray-500 border-opacity-50 max-h-[75vh] overflow-y-scroll'
+        <form className='flex mx-auto flex-col sm:w-[60vw] gap-4 bg-finalDark px-5 py-5 rounded-md border shadow-md border-gray-500 border-opacity-50 max-h-[75vh] overflow-y-scroll'
           onSubmit={handleEditQuestion}
         >
           <input type="text" placeholder='Question' className='px-2 py-2 border-gray-500 bg-dark2 border border-opacity-20 outline-none rounded-md ' name='question' value={newQuestionInfo.question} required autoComplete='off' onChange={handleChange} />

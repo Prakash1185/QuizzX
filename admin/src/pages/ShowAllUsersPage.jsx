@@ -38,7 +38,7 @@ const ShowAllUsersPage = () => {
 
 
   return (
-    <div className='mx-10 py-5'>
+    <div className='mx-10 py-5 overflow-x-auto'>
       <div className=' space-x-5'>
         <h1 className=' text-3xl font-medium inline-block'>All Users </h1>
         <h1 className='inline-block'>

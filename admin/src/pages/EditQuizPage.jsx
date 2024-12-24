@@ -67,7 +67,7 @@ const EditQuizPage = () => {
 
 
   return (
-    <div className='mx-10 py-5 '>
+    <div className='sm:mx-10 py-5 mx-auto px-5 overflow-x-auto'>
       <div className='flex items-center gap-5 mb-5'>
         <Link to={`/admin/quiz/${quizId}/manage`}>
           <button className='font-inter bg-gray-800 text-white py-2 px-5 rounded-md w-20'>
@@ -78,7 +78,7 @@ const EditQuizPage = () => {
       </div>
       {/* <h1 className=' text-3xl font-medium text-center  font-poppins'>EditQuiz</h1> */}
       <div className=''>
-        <form className='flex mx-auto flex-col w-[60vw] gap-4 bg-finalDark px-5 py-5 rounded-md border shadow-md border-gray-500 border-opacity-50 max-h-[75vh] overflow-y-scroll' onSubmit={handleEditQuiz}
+        <form className='flex mx-auto flex-col sm:w-[60vw] w-[25rem] gap-4 bg-finalDark px-5 py-5 rounded-md border shadow-md border-gray-500 border-opacity-50 max-h-[75vh] overflow-y-scroll ' onSubmit={handleEditQuiz}
         >
           <input type="text" placeholder='Quiz Title' className='px-2 py-2 border-gray-500 bg-dark2 border border-opacity-20 outline-none rounded-md ' onChange={handleChange} name="title" value={newQuizInfo.title} autoComplete='off' required />
 
@@ -88,7 +88,7 @@ const EditQuizPage = () => {
 
           <input type="number" placeholder='Question Time Limit (in secs)' className='px-2 py-2 border-gray-500 bg-dark2 border border-opacity-20 outline-none rounded-md ' onChange={handleChange} name="questionTimeLimit" value={newQuizInfo.questionTimeLimit} autoComplete='off' required />
 
-          <textarea placeholder='Description (max 50 words)' className='px-2 py-2 border-gray-500 bg-dark2 border border-opacity-20 outline-none rounded-md ' onChange={handleChange} name="description" value={newQuizInfo.description} autoComplete='off' required />
+          <textarea placeholder='Description (max 50 words)' className='px-2 py-2  border-gray-500 bg-dark2 border border-opacity-20 outline-none rounded-md ' onChange={handleChange} name="description" value={newQuizInfo.description} autoComplete='off' required />
 
           <button type='submit' className="bg-green-700  hover:bg-green-800 transition-all duration-200 py-3 px-10 text-lg text-white rounded-md font-semibold">
             Edit and Save

@@ -64,7 +64,7 @@ export const QuizActions = ({ text }) => {
 export const ManageQuiz = ({ text, id }) => {
     return (
         <Link to={`/admin/quiz/${id}/manage`}>
-            <button className="bg-blue-700  hover:bg-blue-800 transition-all duration-200 py-3 px-10 text-lg text-white rounded-md font-semibold w-[22rem]">
+            <button className="bg-blue-700  hover:bg-blue-800 transition-all duration-200 py-3 px-10 text-lg text-white rounded-md font-semibold w-full  sm:w-[22rem]">
                 {text}
             </button>
         </Link>
@@ -99,7 +99,7 @@ export const DeleteQuiz = ({ text }) => {
 
 export const LoginButton = () => {
     return (
-        <button className='text-lg font-medium cursor-pointer bg-Ngreen hover:bg-Dgreen transition-all duration-300 px-7 py-2 rounded-md'>
+        <button className='text-lg font-medium cursor-pointer bg-Ngreen hover:bg-Dgreen transition-all duration-300 px-5 sm:px-7 sm:py-2 py-1.5 rounded-md'>
             Login
         </button>
     )

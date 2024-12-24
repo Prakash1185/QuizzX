@@ -60,7 +60,7 @@ const AdminLoginPage = () => {
   }
 
   return (
-    <div className='flex justify-center pt-10 md:pt-20 mx-auto'>
+    <div className='flex justify-center pt-10 md:pt-20 mx-auto overflow-x-auto'>
       <div className='w-[25rem] md:w-[27rem] scale-90 sm:scale-100 bg-finalDark rounded-md border border-gray-500 border-opacity-50 flex flex-col px-4 md:px-6 py-10 md:py-8 gap-4 '>
         <h1 className='text-[2rem] font-semibold text-center tracking-wide '> <span className='font-bold  font-poppins text-Ngreen'>Admin</span> Login</h1>
         <form
