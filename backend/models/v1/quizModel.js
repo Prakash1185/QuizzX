@@ -50,10 +50,10 @@ const quizSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    quizTimeLimit: {
-        type: Number,
-        required: true
-    }
+    // quizTimeLimit: {
+    //     type: Number,
+    //     required: true
+    // }
 });
 
 const Quiz = mongoose.model('Quiz', quizSchema);

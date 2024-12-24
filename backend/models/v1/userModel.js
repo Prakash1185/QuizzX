@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     },
     quizzesAttempted: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Quiz'
+        ref: 'Quiz',
     }],
     score: {
         type: Number,

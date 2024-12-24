@@ -4,10 +4,10 @@ import OptionsModel from "../../models/v1/optionsModel.js";
 
 // Create a quiz 
 const createQuiz = async (req, res) => {
-    const { title, description, bannerImage, questions, isActivated, questionTimeLimit, quizTimeLimit } = req.body;
+    const { title, description, bannerImage, questions, isActivated, questionTimeLimit } = req.body;
 
     if (!title || !description || !bannerImage ||
-        !questionTimeLimit || !quizTimeLimit) {
+        !questionTimeLimit) {
         return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -19,7 +19,7 @@ const createQuiz = async (req, res) => {
             questions,
             isActivated,
             questionTimeLimit,
-            quizTimeLimit
+            // quizTimeLimit
         });
         await quiz.save();
         res.status(201).json({ message: "Quiz created", quiz, success: true });
@@ -196,7 +196,7 @@ const getQuizById = async (req, res) => {
 
 // update the quiz details for admin
 const updateQuiz = async (req, res) => {
-    const { title, description, bannerImage, questions, isActivated, attendes, quizTimeLimit, questionTimeLimit } = req.body;
+    const { title, description, bannerImage, questions, isActivated, attendes, questionTimeLimit } = req.body;
     const { quizId } = req.params;
 
     // if (!title || !description || !bannerImage) {
@@ -211,7 +211,7 @@ const updateQuiz = async (req, res) => {
             questions,
             isActivated,
             attendes,
-            quizTimeLimit,
+            // quizTimeLimit,
             questionTimeLimit
         });
         res.status(200).json({ message: "Quiz updated", success: true });
@@ -255,14 +255,34 @@ const updateQuestion = async (req, res) => {
 
 
 // delete the quiz for admin with help of quizID
+// const deleteQuiz = async (req, res) => {
+//     const { quizId } = req.params;
+
+//     try {
+//         await QuizModel.findByIdAndDelete(quizId);
+//         res.status(200).json({ message: "Quiz deleted", success: true });
+//     }
+//     catch (error) {
+//         console.log(error);
+//         res.status(500).json({ message: "Server error", error: error.message, success: false });
+//     }
+// }
+
 const deleteQuiz = async (req, res) => {
     const { quizId } = req.params;
 
     try {
+        // Step 1: Delete questions associated with the quiz
+        await QuestionModel.deleteMany({ quizId });
+
+        // Step 2: Delete options associated with the quiz
+        await OptionsModel.deleteMany({ quizId });
+
+        // Step 3: Delete the quiz
         await QuizModel.findByIdAndDelete(quizId);
-        res.status(200).json({ message: "Quiz deleted", success: true });
-    }
-    catch (error) {
+
+        res.status(200).json({ message: "Quiz and associated questions/options deleted", success: true });
+    } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Server error", error: error.message, success: false });
     }

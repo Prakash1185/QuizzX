@@ -14,7 +14,7 @@ userRouter.delete('/delete', adminMiddleware, deleteAllUsers);
 // Read routes
 userRouter.get('/users', getUsers);
 userRouter.get('/:userId', getUserById);
-userRouter.get('/:userId/score', getScore);
+userRouter.get('/:userId/score', adminMiddleware, getScore);
 userRouter.get('/:quizId/attendes', adminMiddleware, getAttendesDetails);
 userRouter.get('/:quizId/users', authMiddleware, getUsersByQuizId);
 // userRouter.get('/:quizId/leaderboard', getLeaderboard);

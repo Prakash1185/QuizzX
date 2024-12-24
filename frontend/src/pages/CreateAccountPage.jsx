@@ -5,11 +5,12 @@ import { handleError, handleSuccess } from '../components/ToastMessages';
 
 const CreateAccountPage = () => {
   const [accountInfo, setAccountInfo] = useState({ name: '' });
-  const [canNavigate, setCanNavigate] = useState(true); // New flag to track navigation
+  const [canNavigate, setCanNavigate] = useState(true);
   const { isAccountCreated, setIsAccountCreated, BackendURL } = useContext(UserContext);
   const { quizId } = useParams();
   const navigate = useNavigate();
-  const userId = localStorage.getItem('userId');
+
+  const userId = localStorage.getItem('userId'); // Retrieve userId from localStorage
 
   // Handle input changes
   const handleChange = (e) => {
@@ -18,10 +19,13 @@ const CreateAccountPage = () => {
   };
 
   // Mark the quiz as attempted
-  const handleQuizAttempted = async () => {
-    try {
-      console.log(userId);
+  const handleQuizAttempted = async (userId) => {
+    if (!userId) {
+      console.error('Error: userId is undefined in handleQuizAttempted');
+      return handleError('Unable to mark quiz as attempted: user ID is missing.');
+    }
 
+    try {
       const response = await fetch(`${BackendURL}/user/add-quiz/${quizId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -29,16 +33,25 @@ const CreateAccountPage = () => {
       });
 
       const result = await response.json();
-      console.log('Quiz marked as attempted:', result);
+      if (response.ok) {
+        console.log('Quiz marked as attempted:', result);
+      } else {
+        throw new Error(result.message || 'Failed to mark quiz as attempted.');
+      }
     } catch (error) {
       console.error('Error in handleQuizAttempted:', error);
       handleError(error.message || 'Something went wrong while marking quiz as attempted.');
-      setCanNavigate(false); // Prevent navigation on error
+      setCanNavigate(false);
     }
   };
 
   // Add the user to quiz attendees
-  const addUserToAttendees = async () => {
+  const addUserToAttendees = async (userId) => {
+    if (!userId) {
+      console.error('Error: userId is undefined in addUserToAttendees');
+      return handleError('Unable to add user to attendees: user ID is missing.');
+    }
+
     try {
       const response = await fetch(`${BackendURL}/quiz/${quizId}/update-attendee`, {
         method: 'PUT',
@@ -50,16 +63,15 @@ const CreateAccountPage = () => {
       });
 
       const result = await response.json();
-      if (result.success) {
+      if (response.ok) {
         handleSuccess('User added to attendees.');
       } else {
-        handleError(result.message || 'Failed to add user to attendees.');
-        setCanNavigate(false); // Prevent navigation on error
+        throw new Error(result.message || 'Failed to add user to attendees.');
       }
     } catch (error) {
       console.error('Error in addUserToAttendees:', error);
       handleError(error.message || 'Something went wrong while adding user to attendees.');
-      setCanNavigate(false); // Prevent navigation on error
+      setCanNavigate(false);
     }
   };
 
@@ -85,13 +97,15 @@ const CreateAccountPage = () => {
       if (success) {
         handleSuccess(message);
         setIsAccountCreated(true);
+
+        // Store details in localStorage
         localStorage.setItem('token', token);
         localStorage.setItem('userId', id);
         localStorage.setItem('name', name);
 
-        // Run both additional actions before navigating
-        await handleQuizAttempted();
-        await addUserToAttendees();
+        // Run additional actions
+        await handleQuizAttempted(id);
+        await addUserToAttendees(id);
 
         // If no error occurred, navigate
         if (canNavigate) {
@@ -100,12 +114,12 @@ const CreateAccountPage = () => {
         }
       } else {
         handleError(message || 'Failed to create account.');
-        setCanNavigate(false); // Prevent navigation if account creation fails
+        setCanNavigate(false);
       }
     } catch (error) {
       console.error('Error in handleCreateAccount:', error);
       handleError(error.message || 'Something went wrong while creating the account.');
-      setCanNavigate(false); // Prevent navigation on error
+      setCanNavigate(false);
     }
   };
 

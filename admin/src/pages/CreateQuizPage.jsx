@@ -11,7 +11,7 @@ const CreateQuizPage = () => {
   const [quizInfo, setQuizInfo] = useState({
     title: '',
     bannerImage: '',
-    quizTimeLimit: '',
+    // quizTimeLimit: '',
     questionTimeLimit: '',
     description: ''
   });
@@ -26,8 +26,8 @@ const CreateQuizPage = () => {
   const handleCreateQuiz = async (e) => {
     e.preventDefault();
 
-    const { title, bannerImage, quizTimeLimit, questionTimeLimit, description } = quizInfo;
-    if (!title || !bannerImage || !quizTimeLimit || !questionTimeLimit || !description) {
+    const { title, bannerImage, questionTimeLimit, description } = quizInfo;
+    if (!title || !bannerImage || !questionTimeLimit || !description) {
       return handleError('Please fill all the details')
     }
     try {
@@ -49,7 +49,7 @@ const CreateQuizPage = () => {
         setQuizInfo({
           title: '',
           bannerImage: '',
-          quizTimeLimit: '',
+          // quizTimeLimit: '',
           questionTimeLimit: '',
           description: ''
         })
@@ -79,7 +79,7 @@ const CreateQuizPage = () => {
 
           <input type="text" placeholder='Banner Image Link' className='px-2 py-2 border-gray-500 bg-dark2 border border-opacity-20 outline-none rounded-md ' onChange={handleChange} name="bannerImage" value={quizInfo.bannerImage} autoComplete='off' required />
 
-          <input type="number" placeholder='Quiz Time Limit (in mins)' className='px-2 py-2 border-gray-500 bg-dark2 border border-opacity-20 outline-none rounded-md ' onChange={handleChange} name="quizTimeLimit" value={quizInfo.quizTimeLimit} autoComplete='off' required />
+          {/* <input type="number" placeholder='Quiz Time Limit (in mins)' className='px-2 py-2 border-gray-500 bg-dark2 border border-opacity-20 outline-none rounded-md ' onChange={handleChange} name="quizTimeLimit" value={quizInfo.quizTimeLimit} autoComplete='off' required /> */}
 
           <input type="number" placeholder='Question Time Limit (in secs)' className='px-2 py-2 border-gray-500 bg-dark2 border border-opacity-20 outline-none rounded-md ' onChange={handleChange} name="questionTimeLimit" value={quizInfo.questionTimeLimit} autoComplete='off' required />
 

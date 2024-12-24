@@ -122,9 +122,9 @@ const AttendQuizPage = () => {
       if (success) {
         handleSuccess(`Your score is ${score}`);
         navigate(`/quiz/${quizId}/success`);
-        localStorage.removeItem('userId');
-        localStorage.removeItem('token');
-        localStorage.removeItem('name')
+        // localStorage.removeItem('userId');
+        // localStorage.removeItem('token');
+        // localStorage.removeItem('name')
       }
       if (!success) {
         return handleError(scoreResult.message || "Failed to calculate score");
