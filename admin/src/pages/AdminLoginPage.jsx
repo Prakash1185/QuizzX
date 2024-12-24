@@ -41,7 +41,7 @@ const AdminLoginPage = () => {
       const result = await response.json();
       const { success, message, token } = result;
 
-      console.log(result);
+      // console.log(result);
       if (success) {
         handleSuccess(message)
         setIsLoggedIn(true)

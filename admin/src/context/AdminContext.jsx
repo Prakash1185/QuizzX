@@ -77,7 +77,7 @@ const AdminContextProvider = (props) => {
             const { success, message, quiz } = result
 
             if (success) {
-                console.log(quiz.questions);
+                // console.log(quiz.questions);
                 setQuestions(quiz.questions)
             }
 

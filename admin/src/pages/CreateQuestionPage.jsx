@@ -46,7 +46,7 @@ const CreateQuestionPage = () => {
       const result = await response.json();
       const { success, message } = result;
 
-      console.log(result);
+      // console.log(result);
       if (success) {
         handleSuccess(message)
         setQuestionInfo({

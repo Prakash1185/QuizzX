@@ -20,7 +20,7 @@ const QuizzesPage = () => {
 
       if (success) {
         setQuizzes(quizzes)
-        console.log(quizzes)
+        // console.log(quizzes)
       }
 
       if (!success) {

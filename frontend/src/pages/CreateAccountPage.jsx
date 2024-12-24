@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import { handleError, handleSuccess } from '../components/ToastMessages';
@@ -9,9 +9,23 @@ const CreateAccountPage = () => {
   const { isAccountCreated, setIsAccountCreated, BackendURL } = useContext(UserContext);
   const { quizId } = useParams();
   const navigate = useNavigate();
-
   const userId = localStorage.getItem('userId'); // Retrieve userId from localStorage
-
+  const checkEntryStatus = async () => {
+    try {
+      const response = await fetch(`${BackendURL}/quiz/${quizId}/status`);
+      const result = await response.json();
+      const { success, isEntryAllowed } = result;
+      if (success) {
+        return isEntryAllowed; // Return the entry status directly
+      } else {
+        handleError("Something went wrong!");
+        return false; // Default to false if the API call fails
+      }
+    } catch (error) {
+      handleError("Something went wrong!");
+      return false; // Return false on error
+    }
+  };
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,7 +48,7 @@ const CreateAccountPage = () => {
 
       const result = await response.json();
       if (response.ok) {
-        console.log('Quiz marked as attempted:', result);
+        // console.log('Quiz marked as attempted:', result);
       } else {
         throw new Error(result.message || 'Failed to mark quiz as attempted.');
       }
@@ -78,6 +92,14 @@ const CreateAccountPage = () => {
   // Create a new account
   const handleCreateAccount = async (e) => {
     e.preventDefault();
+
+    // Check if entry is allowed before proceeding with the submission
+    const isAllowed = await checkEntryStatus(); // Get the status directly
+
+    // If entry is not allowed, show error and exit
+    if (!isAllowed) {
+      return handleError("Entry not allowed!");
+    }
     const { name } = accountInfo;
 
     if (!name) {

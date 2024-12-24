@@ -1,6 +1,11 @@
 import Joi from 'joi';
 
 const createAccountValidator = (req, res, next) => {
+
+    // Remove all spaces from the name before validation
+    req.body.name = req.body.name.replace(/\s+/g, '');
+
+
     const schema = Joi.object({
         name: Joi.string().min(3).max(40).required().messages({
             'string.base': 'Name should be a type of text',

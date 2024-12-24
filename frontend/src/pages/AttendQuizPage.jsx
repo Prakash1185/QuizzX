@@ -14,7 +14,25 @@ const AttendQuizPage = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(60); // Set default time for each question
   const [selectedOptions, setSelectedOptions] = useState([]);
-  let timer; // Declare the timer outside of useEffect
+  let timer;
+
+  const checkEntryStatus = async () => {
+    try {
+      const response = await fetch(`${BackendURL}/quiz/${quizId}/status`);
+      const result = await response.json();
+      const { success, isEntryAllowed } = result;
+      if (success) {
+        return isEntryAllowed; // Return the entry status directly
+      } else {
+        handleError("Something went wrong!");
+        return false; // Default to false if the API call fails
+      }
+    } catch (error) {
+      handleError("Something went wrong!");
+      return false; // Return false on error
+    }
+  };
+
 
   const getQuestionsForUser = async () => {
     try {
@@ -86,6 +104,15 @@ const AttendQuizPage = () => {
 
   // Submit the selected options to the backend
   const handleSubmit = async () => {
+
+    // Check if entry is allowed before proceeding with the submission
+    const isAllowed = await checkEntryStatus(); // Get the status directly
+
+    // If entry is not allowed, show error and exit
+    if (!isAllowed) {
+      return handleError("Submission not allowed at this time.");
+    }
+
     try {
       // Submit selected options first
       const response = await fetch(`${BackendURL}/user/${quizId}/store-options`, {

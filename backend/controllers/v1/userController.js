@@ -64,7 +64,7 @@ export const createAccount = async (req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
 
@@ -76,7 +76,7 @@ export const getUsers = async (req, res) => {
         const users = await UserModel.find();
         res.status(200).json({ success: true, users });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
 };
@@ -92,7 +92,7 @@ export const getUserById = async (req, res) => {
         }
         res.status(200).json({ success: true, user });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
 };
@@ -113,7 +113,7 @@ export const updateUserById = async (req, res) => {
 
         res.status(200).json({ success: true, message: "User updated", user });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
 };
@@ -227,7 +227,7 @@ export const updateScore = async (req, res) => {
 
         res.status(200).json({ success: true, message: "Score updated", user });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
 };
@@ -362,7 +362,7 @@ export const getScore = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
 };
@@ -438,7 +438,7 @@ export const getLeaderboard = async (req, res) => {
         res.status(200).json({ success: true, users });
     }
     catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
 }
@@ -558,7 +558,7 @@ export const getAttendesDetails = async (req, res) => {
 // Function to get all users who have the specified quizId in their quizzesAttempted field
 export const getUsersByQuizId = async (req, res) => {
     const { quizId } = req.params;
-    console.log(quizId);
+    // console.log(quizId);
 
     try {
         const users = await UserModel.find({ quizzesAttempted: quizId }).select('name score _id').sort({ score: -1 });

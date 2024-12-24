@@ -24,13 +24,13 @@ const LeaderboardPage = () => {
             const { success, attendes } = result
 
             if (success) {
-                console.log(attendes);
+                // console.log(attendes);
                 setAttendes(attendes);
             } else {
-                console.log(result.message);
+                // console.log(result.message);
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 

@@ -24,7 +24,7 @@ const createQuiz = async (req, res) => {
         await quiz.save();
         res.status(201).json({ message: "Quiz created", quiz, success: true });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server error", error: error.message, success: false });
     }
 };
@@ -68,7 +68,7 @@ const createQuestion = async (req, res) => {
 
         res.status(201).json({ message: "Question added", question: newQuestion, success: true });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server error", error: error.message, success: false });
     }
 };
@@ -79,7 +79,7 @@ const getAllQuizzes = async (req, res) => {
         const quizzes = await QuizModel.find();
         res.status(200).json({ quizzes, success: true });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server error", error: error.message, success: false });
     }
 };
@@ -90,7 +90,7 @@ const getAllQuizzesForUser = async (req, res) => {
         const quizzes = await QuizModel.find({}, "title description bannerImage isEntryAllowed showLeaderboard");
         res.status(200).json({ quizzes, success: true });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server error", error: error.message, success: false });
     }
 };
@@ -107,7 +107,7 @@ const getQuizQuestionsById = async (req, res) => {
         res.status(200).json({ quiz, success: true });
     }
     catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server error", error: error.message, success: false });
     }
 };
@@ -148,7 +148,7 @@ const getQuizQuestionsByIdForUsers = async (req, res) => {
         res.status(200).json({ quiz: simplifiedQuiz, success: true });
     }
     catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server error", error: error.message, success: false });
     }
 };
@@ -169,7 +169,7 @@ const getQuestionById = async (req, res) => {
         res.status(200).json({ question, success: true });
     }
     catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server error", error: error.message, success: false });
     }
 }
@@ -189,7 +189,7 @@ const getQuizById = async (req, res) => {
         res.status(200).json({ quiz, success: true });
     }
     catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server error", error: error.message, success: false });
     }
 }
@@ -216,7 +216,7 @@ const updateQuiz = async (req, res) => {
         });
         res.status(200).json({ message: "Quiz updated", success: true });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server error", error: error.message, success: false });
     }
 };
@@ -248,7 +248,7 @@ const updateQuestion = async (req, res) => {
 
         res.status(200).json({ message: "Question updated", success: true });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server error", error: error.message, success: false });
     }
 };
@@ -283,7 +283,7 @@ const deleteQuiz = async (req, res) => {
 
         res.status(200).json({ message: "Quiz and associated questions/options deleted", success: true });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server error", error: error.message, success: false });
     }
 }
@@ -297,7 +297,7 @@ const deleteQuestion = async (req, res) => {
         res.status(200).json({ message: "Question deleted", success: true });
     }
     catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server error", error: error.message, success: false });
     }
 }
@@ -330,7 +330,7 @@ const updateIsEntryStatus = async (req, res) => {
         res.status(200).json({ message: "Quiz status updated", success: true });
     }
     catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server error", error: error.message, success: false });
     }
 }
@@ -345,11 +345,24 @@ const updateShowLeaderboardStatus = async (req, res) => {
         res.status(200).json({ message: "Leaderboard status updated", success: true });
     }
     catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server error", error: error.message, success: false });
     }
 }
 
+// function to get isEntryAllowed status of the quiz using quizId
+const getQuizStatus = async (req, res) => {
+    const { quizId } = req.params;
+
+    try {
+        const quiz = await QuizModel.findById(quizId);
+        res.status(200).json({ isEntryAllowed: quiz.isEntryAllowed, success: true });
+    }
+    catch (error) {
+        // console.log(error);
+        res.status(500).json({ message: "Server error", error: error.message, success: false });
+    }
+}
 
 // exporting all the functions
-export { createQuiz, createQuestion, getAllQuizzes, getAllQuizzesForUser, getQuizQuestionsById, getQuestionById, getQuizById, updateQuiz, updateQuestion, deleteQuiz, deleteQuestion, updateIsEntryStatus, updateShowLeaderboardStatus, getQuizQuestionsByIdForUsers };
+export { createQuiz, createQuestion, getAllQuizzes, getAllQuizzesForUser, getQuizQuestionsById, getQuestionById, getQuizById, updateQuiz, updateQuestion, deleteQuiz, deleteQuestion, updateIsEntryStatus, updateShowLeaderboardStatus, getQuizQuestionsByIdForUsers, getQuizStatus };
