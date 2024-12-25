@@ -116,7 +116,15 @@ export const FormLoginButton = () => {
 
 export const LogoutButton = () => {
     return (
-        <button  className='text-lg font-medium cursor-pointer bg-red-600 hover:bg-red-700 transition-all duration-300 px-6 py-2 rounded-md'>
+        <button className='text-lg font-medium cursor-pointer bg-red-600 hover:bg-red-700 transition-all duration-300 px-6 py-2 rounded-md'>
+            Logout
+        </button>
+    )
+}
+
+export const LogoutButtonTest = () => {
+    return (
+        <button className='text-lg font-medium cursor-pointer bg-red-600 hover:bg-red-700 transition-all duration-300 px-6 py-2 rounded-md'>
             Logout
         </button>
     )
