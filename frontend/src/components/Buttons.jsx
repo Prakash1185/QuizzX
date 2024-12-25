@@ -9,7 +9,7 @@ export const ViewQuizzes = () => {
 
 export const ExploreQuizzes = () => {
     return (
-        <button onClick={() => navigate('/all-quizzes')} className='text-[1.2rem] font-medium cursor-pointer bg-Ngreen text-white px-7 py-2 rounded-lg   hover:bg-Dgreen transition-all duration-300  '>
+        <button className='text-[1.2rem] font-medium cursor-pointer bg-Ngreen text-white px-7 py-2 rounded-lg   hover:bg-Dgreen transition-all duration-300  '>
             Explore
         </button>
     )
