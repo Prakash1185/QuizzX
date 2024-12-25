@@ -27,12 +27,12 @@ const LeaderboardPage = () => {
             if (success) {
                 setAttendes(attendes);
             } else {
-                console.log(result.message);
+                // console.log(result.message);
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         } finally {
-            setLoading(false); // Set loading to false once the data is fetched or an error occurs
+            setLoading(false);
         }
     };
 
@@ -46,7 +46,7 @@ const LeaderboardPage = () => {
             });
 
             const result = await response.json();
-            console.log(result); 
+            console.log(result);
             const { success, message } = result;
 
             if (success) {
@@ -56,7 +56,7 @@ const LeaderboardPage = () => {
                 handleError(message);
             }
         } catch (error) {
-            console.error(error);  
+            console.error(error);
             handleError('Failed to delete all attendes');
         }
     };

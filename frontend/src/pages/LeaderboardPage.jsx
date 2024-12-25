@@ -8,13 +8,13 @@ import { useParams } from 'react-router-dom';
 import { handleError } from '../components/ToastMessages';
 
 
-
-
 const LeaderboardPage = () => {
 
     const [attendes, setAttendes] = useState([]);
     const { BackendURL } = useContext(UserContext)
     const { quizId } = useParams()
+    const [loading, setLoading] = useState(true);
+
 
     const getLeaderboard = async () => {
         try {
@@ -36,6 +36,8 @@ const LeaderboardPage = () => {
         } catch (error) {
             // console.log(error);
             handleError("Something went wrong!");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -65,9 +67,9 @@ const LeaderboardPage = () => {
             </div>
 
             {/* Leaderboard Rows */}
-            <div className='gap-3 flex-col flex w-[90%] px-2 sm:w-[80%] md:w-[45rem] max-h-[calc(100vh-12rem)] overflow-y-auto'>
+            {/* <div className='gap-3 flex-col flex w-[90%] px-2 sm:w-[80%] md:w-[45rem] max-h-[calc(100vh-12rem)] overflow-y-auto'>
                 {attendes.map((attendee, index) => (
-                    <div key={attendee._id} className="flex items-center justify-between w-full px-4 py-3 rounded-md bg-opacity-15  text-white bg-gray-800">
+                    <div key={attendee._id} className="flex items-center justify-between w-full px-4 py-3 rounded-md bg-opacity-25  text-white bg-gray-800">
                         <div className="flex items-center gap-3 ">
                             <h1 className="text-xl font-medium">{index + 1}.</h1>
                             <UserBox Name={attendee.name} Score={attendee.score} />
@@ -75,7 +77,31 @@ const LeaderboardPage = () => {
                         <div className="text-lg font-semibold">{attendee.score}</div>
                     </div>
                 ))}
+            </div> */}
+
+            <div className='gap-3 flex-col flex w-[90%] px-2 sm:w-[80%] md:w-[45rem] max-h-[calc(100vh-12rem)] overflow-y-auto'>
+                {loading ? (
+                    <div className="flex justify-center items-center mt-10">
+                        <div className="spinner"></div>
+                        <p className="ml-3 text-xl font-poppins">Loading leaderboard...</p>
+                    </div>
+                ) : (
+                    attendes.length > 0 ? (
+                        attendes.map((attendee, index) => (
+                            <div key={attendee._id} className="flex items-center justify-between w-full px-4 py-3 rounded-md bg-opacity-25 text-white bg-gray-800">
+                                <div className="flex items-center gap-3 ">
+                                    <h1 className="text-xl font-medium">{index + 1}.</h1>
+                                    <UserBox Name={attendee.name} Score={attendee.score} />
+                                </div>
+                                <div className="text-lg font-semibold">{attendee.score}</div>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="text-xl font-poppins">No attendees found.</p>
+                    )
+                )}
             </div>
+
 
         </div>
     )
