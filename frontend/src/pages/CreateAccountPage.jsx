@@ -9,7 +9,10 @@ const CreateAccountPage = () => {
   const { isAccountCreated, setIsAccountCreated, BackendURL } = useContext(UserContext);
   const { quizId } = useParams();
   const navigate = useNavigate();
-  const userId = localStorage.getItem('userId'); // Retrieve userId from localStorage
+  const userId = localStorage.getItem('userId');
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const checkEntryStatus = async () => {
     try {
       const response = await fetch(`${BackendURL}/quiz/${quizId}/status`);
@@ -109,6 +112,8 @@ const CreateAccountPage = () => {
       return handleError('Please enter your name');
     }
 
+    setIsLoading(true);
+
     try {
       const response = await fetch(`${BackendURL}/user/create-account`, {
         method: 'POST',
@@ -145,6 +150,8 @@ const CreateAccountPage = () => {
       // console.error('Error in handleCreateAccount:', error);
       handleError(error.message || 'Something went wrong while creating the account.');
       setCanNavigate(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -165,11 +172,19 @@ const CreateAccountPage = () => {
             onChange={handleChange}
             autoComplete="off"
           />
-          <button
+          {/* <button
             type="submit"
             className="bg-Ngreen hover:bg-Dgreen transition-all duration-300 py-3 px-28 md:px-36 mx-auto text-center text-lg text-white rounded-md font-semibold cursor-pointer"
           >
             Start Quiz
+          </button> */}
+
+          <button
+            type="submit"
+            className={`bg-Ngreen hover:bg-Dgreen transition-all duration-300 py-3 px-28 md:px-36 mx-auto text-center text-lg text-white rounded-md font-semibold cursor-pointer ${isLoading ? 'cursor-not-allowed ' : ''}`}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Starting...' : 'Start Quiz'} {/* Change button text based on loading state */}
           </button>
         </form>
       </div>

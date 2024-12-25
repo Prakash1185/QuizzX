@@ -48,7 +48,7 @@ const QuizzesPage = () => {
       <div className='flex flex-col -space-y-16 md:-space-y-0 md:gap-10'>
         {
           loading ? (
-            <h1 className='text-2xl font-semibold text-gray-500'>Loading...</h1> // Show loading message
+            <h1 className='text-2xl font-semibold text-gray-200 pt-10 md:pt-0'>Loading...</h1> // Show loading message
           ) : quizzes.length > 0 ? (
             quizzes.map((quiz) => (
               <QuizBox
@@ -62,7 +62,7 @@ const QuizzesPage = () => {
               />
             ))
           ) : (
-            <h1 className='text-2xl font-semibold text-gray-500'>No Quizzes Available</h1>
+            <h1 className='text-2xl font-semibold text-gray-300 pt-10 md:pt-0'>No Quizzes Available</h1>
           )
         }
       </div>

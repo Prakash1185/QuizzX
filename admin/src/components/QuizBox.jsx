@@ -10,11 +10,17 @@ const QuizBox = ({ bannerImage, attendes, date, quizTimeLimit, title, descriptio
 
     const { getAllQuizzes, BackendURL } = useContext(AdminContext)
 
+    const [isQuizStatusLoading, setIsQuizStatusLoading] = useState(false);
+    const [isLeaderboardLoading, setIsLeaderboardLoading] = useState(false);
+    const [isDeleteLoading, setIsDeleteLoading] = useState(false);
+
+
     // const [isActivated, setIsActivated] = useState(() => quizzes.find(quiz => quiz._id === id)?.isActivated);
     const [isEntryAllowed, setIsEntryAllowed] = useState(() => quizzes.find(quiz => quiz._id === id)?.isEntryAllowed);
     const [isSlowLeaderboard, setIsShowLeaderboard] = useState(() => quizzes.find(quiz => quiz._id === id)?.showLeaderboard);
 
     const handleDelete = async (id) => {
+        setIsDeleteLoading(true)
         try {
             const response = await fetch(`${BackendURL}/quiz/delete-quiz/${id}`, {
                 method: "DELETE",
@@ -37,6 +43,8 @@ const QuizBox = ({ bannerImage, attendes, date, quizTimeLimit, title, descriptio
 
         } catch (error) {
             handleError(error)
+        } finally {
+            setIsDeleteLoading(false)
         }
     }
 
@@ -91,7 +99,7 @@ const QuizBox = ({ bannerImage, attendes, date, quizTimeLimit, title, descriptio
 
 
     const toggleEntryAllowed = async () => {
-
+        setIsQuizStatusLoading(true);
         try {
             const updatedStatus = !isEntryAllowed; // Toggle the status
             const response = await fetch(`${BackendURL}/quiz/update-entry/${id}`, {
@@ -115,11 +123,15 @@ const QuizBox = ({ bannerImage, attendes, date, quizTimeLimit, title, descriptio
             }
         } catch (error) {
             handleError(error);
+        } finally {
+            setIsQuizStatusLoading(false);
         }
+
     };
 
     // function to show or hide leaderboard quiz
     const toggleShowLeaderboard = async () => {
+        setIsLeaderboardLoading(true);
         try {
             const updatedStatus = !isSlowLeaderboard; // Toggle the status
             const response = await fetch(`${BackendURL}/quiz/update-leaderboard-status/${id}`, {
@@ -143,6 +155,8 @@ const QuizBox = ({ bannerImage, attendes, date, quizTimeLimit, title, descriptio
             }
         } catch (error) {
             handleError(error);
+        } finally {
+            setIsLeaderboardLoading(false);
         }
     };
 
@@ -165,13 +179,21 @@ const QuizBox = ({ bannerImage, attendes, date, quizTimeLimit, title, descriptio
                         </div>
 
                         <div className='flex justify-end gap-2 -mt-10 md:mt-4'>
-                            <button
+                            {/* <button
                                 className='border  border-red-600 text-red-600 hover:bg-red-600 transition-all duration-200 py-1.5 px-5 text-lg hover:text-white rounded-md font-semibold'
                                 onClick={() => handleDelete(id)}
                             >
-                                {/* <FaRegTrashCan /> */}
                                 Delete
+                            </button> */}
+                            <button
+                                className={`border border-red-600 text-red-600 hover:bg-red-600 transition-all duration-200 py-1.5 px-5 text-lg rounded-md font-semibold ${isDeleteLoading ? 'cursor-not-allowed bg-red-400 text-white' : 'hover:text-white'
+                                    }`}
+                                onClick={() => handleDelete(id)}
+                                disabled={isDeleteLoading} // Disable the button during deletion
+                            >
+                                {isDeleteLoading ? "Deleting..." : "Delete"}
                             </button>
+
                         </div>
                     </div>
                 </div>
@@ -193,23 +215,41 @@ const QuizBox = ({ bannerImage, attendes, date, quizTimeLimit, title, descriptio
                             {isActivated ? "Deactivate" : "Activate"}
                         </h1> */}
                         {/* Allow Entry */}
-                        <h1
+                        {/* <h1
 
                             onClick={toggleEntryAllowed}
                             className="bg-Ngreen hover:bg-Dgreen
                                  transition-all duration-200 py-3 px-10 text-lg text-center text-white rounded-md font-semibold cursor-pointer"
                         >
                             {isEntryAllowed ? "Stop Quiz" : "Start Quiz"}
-                        </h1>
-                        {/* Show leaderboard */}
+                        </h1> */}
+
+
                         <h1
+                            onClick={toggleEntryAllowed}
+                            className={`bg-Ngreen hover:bg-Dgreen transition-all duration-200 py-3 px-10 text-lg text-center text-white rounded-md font-semibold cursor-pointer ${isQuizStatusLoading ? 'cursor-not-allowed' : ''}`}
+                            style={{ pointerEvents: isQuizStatusLoading ? 'none' : 'auto' }} // Prevent clicks during loading
+                        >
+                            {isQuizStatusLoading ? "updating..." : isEntryAllowed ? "Stop Quiz" : "Start Quiz"}
+                        </h1>
+
+                        {/* Show leaderboard */}
+                        {/* <h1
 
                             onClick={toggleShowLeaderboard}
                             className="bg-orange-700 hover:bg-orange-800
                                  transition-all duration-200 py-3 px-10 text-lg text-center text-white rounded-md font-semibold cursor-pointer"
                         >
                             {isSlowLeaderboard ? "Hide Leaderboard" : "Show Leaderboard"}
+                        </h1> */}
+                        <h1
+                            onClick={toggleShowLeaderboard}
+                            className={`bg-orange-700 hover:bg-orange-800 transition-all duration-200 py-3 px-10 text-lg text-center text-white rounded-md font-semibold cursor-pointer ${isLeaderboardLoading ? 'cursor-not-allowed' : ''}`}
+                            style={{ pointerEvents: isLeaderboardLoading ? 'none' : 'auto' }} // Prevent clicks during loading
+                        >
+                            {isLeaderboardLoading ? "updating..." : isSlowLeaderboard ? "Hide Leaderboard" : "Show Leaderboard"}
                         </h1>
+
                         {/* <Leaderboard id={id} text={"Leaderboard"} /> */}
                         <Link to={`/admin/quiz/${id}/leaderboard`}>
                             <button className="bg-purple-700  hover:bg-purple-800 transition-all duration-200 py-3 px-10 text-lg text-white w-full sm:w-[22rem] rounded-md font-semibold">

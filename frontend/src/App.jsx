@@ -10,10 +10,38 @@ import AfterQuizSubmitPage from "./pages/AfterQuizSubmitPage";
 import LeaderboardPage from "./pages/LeaderboardPage";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useEffect } from "react";
 
 const App = () => {
+
+  useEffect(() => {
+    const disableContextMenu = (event) => {
+      event.preventDefault();
+    };
+
+    const disableCopyPaste = (event) => {
+      event.preventDefault();
+    };
+
+    // Disable right-click context menu
+    document.addEventListener('contextmenu', disableContextMenu);
+
+    // Disable copy, cut, and paste events
+    document.addEventListener('copy', disableCopyPaste);
+    document.addEventListener('cut', disableCopyPaste);
+    document.addEventListener('paste', disableCopyPaste);
+
+    // Cleanup function to remove event listeners
+    return () => {
+      document.removeEventListener('contextmenu', disableContextMenu);
+      document.removeEventListener('copy', disableCopyPaste);
+      document.removeEventListener('cut', disableCopyPaste);
+      document.removeEventListener('paste', disableCopyPaste);
+    };
+  }, []);
+
   return (
-    <div>
+    <div >
       <Navbar />
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />

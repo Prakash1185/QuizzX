@@ -16,6 +16,8 @@ const AttendQuizPage = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   let timer;
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const checkEntryStatus = async () => {
     try {
       const response = await fetch(`${BackendURL}/quiz/${quizId}/status`);
@@ -91,7 +93,7 @@ const AttendQuizPage = () => {
 
   // Loading state
   if (!quiz.title) {
-    return <div>Loading...</div>;
+    return <h1 className='text-2xl font-semibold text-gray-200 pt-10 text-center '>Loading...</h1>;
   }
 
 
@@ -105,13 +107,15 @@ const AttendQuizPage = () => {
   // Submit the selected options to the backend
   const handleSubmit = async () => {
 
-    // Check if entry is allowed before proceeding with the submission
-    const isAllowed = await checkEntryStatus(); // Get the status directly
+
+    const isAllowed = await checkEntryStatus();
 
     // If entry is not allowed, show error and exit
     if (!isAllowed) {
       return handleError("Submission not allowed at this time.");
     }
+
+    setIsLoading(true);
 
     try {
       // Submit selected options first
@@ -160,6 +164,8 @@ const AttendQuizPage = () => {
     } catch (error) {
       console.error('Error in handleSubmit:', error);
       handleError(error.message || "Server error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -191,7 +197,13 @@ const AttendQuizPage = () => {
         {questions.length > 0 && (
           currentQuestionIndex === questions.length - 1 ? (
             <div onClick={handleSubmit} className="flex justify-center items-center">
-              <SubmitButton />
+              <button
+                type="submit"
+                className={`bg-Ngreen hover:bg-Dgreen transition-all duration-300  py-3 w-full text-center text-lg text-white rounded-md font-semibold cursor-pointer ${isLoading ? 'cursor-not-allowed bg-gray-400' : ''}`}
+                disabled={isLoading}
+              >
+                {isLoading ? 'submitting...' : 'Submit'} {/* Change button text based on loading state */}
+              </button>
             </div>
           ) : (
             <div onClick={handleNextQuestion} className="flex justify-center items-center">

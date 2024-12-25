@@ -96,7 +96,7 @@ const CreateQuizPage = () => {
           <button
             type="submit"
             className={`bg-green-700  hover:bg-green-800 transition-all duration-200 py-3 px-10 text-lg text-white rounded-md font-semibold ${isLoading ? 'cursor-not-allowed bg-gray-400' : ''}`}
-            disabled={isLoading} // Disable button while loading
+            disabled={isLoading} 
           >
             {isLoading ? 'Creating...' : 'Create Quiz'} {/* Change button text based on loading state */}
           </button>
