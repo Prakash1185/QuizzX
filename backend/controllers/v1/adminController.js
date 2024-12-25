@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 dotenv.config();
 
-//! admin register not needed for registering admin as is done by another method
+//! admin register not needed for registering admin as it is done by another method
 // function to register admin using email,password and secret key for admin
 const adminRegister = async (req, res) => {
     const { email, password, secretKey } = req.body;
@@ -44,6 +44,7 @@ const adminLogin = async (req, res) => {
             { expiresIn: '2h' }
         );
 
+        res.cookie('token', token, { httpOnly: true, secure: true });
 
         return res.status(200).json({ token, success: true, message: "Admin logged in successfully" });
     } catch (error) {

@@ -16,6 +16,8 @@ const CreateQuizPage = () => {
     description: ''
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     const copyQuizInfo = { ...quizInfo };
@@ -30,6 +32,9 @@ const CreateQuizPage = () => {
     if (!title || !bannerImage || !questionTimeLimit || !description) {
       return handleError('Please fill all the details')
     }
+
+    setIsLoading(true);
+
     try {
       const response = await fetch(`${BackendURL}/quiz/create-quiz`, {
         method: "POST",
@@ -58,6 +63,8 @@ const CreateQuizPage = () => {
       }
     } catch (error) {
       handleError(error)
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -85,7 +92,14 @@ const CreateQuizPage = () => {
 
           <textarea placeholder='Description (max 50 words)' className='px-2 py-2 border-gray-500 bg-dark2 border border-opacity-20 outline-none rounded-md ' onChange={handleChange} name="description" value={quizInfo.description} autoComplete='off' required />
 
-          <ActivateQuiz text={"Create Quiz"} />
+          {/* <ActivateQuiz text={"Create Quiz"} /> */}
+          <button
+            type="submit"
+            className={`bg-green-700  hover:bg-green-800 transition-all duration-200 py-3 px-10 text-lg text-white rounded-md font-semibold ${isLoading ? 'cursor-not-allowed bg-gray-400' : ''}`}
+            disabled={isLoading} // Disable button while loading
+          >
+            {isLoading ? 'Creating...' : 'Create Quiz'} {/* Change button text based on loading state */}
+          </button>
 
         </form>
       </div>

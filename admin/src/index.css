@@ -10,7 +10,27 @@ body {
 ::-webkit-scrollbar {
   @apply hidden;
 }
-html, body {
+html,
+body {
   height: 100%;
   overflow: auto;
+}
+/* Spinner Animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3); /* Light border color */
+  border-top: 4px solid #058c42; /* Green border for the rotating part */
+  border-radius: 50%; /* Circular shape */
+  width: 30px; /* Set width to make it more visible */
+  height: 30px; /* Set height to make it more visible */
+  animation: spin 1s linear infinite; /* Animation: rotate the spinner */
+  display: inline-block; /* Ensures it's displayed inline */
 }

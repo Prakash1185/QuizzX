@@ -35,7 +35,7 @@ const CreateAccountPage = () => {
   // Mark the quiz as attempted
   const handleQuizAttempted = async (userId) => {
     if (!userId) {
-      console.error('Error: userId is undefined in handleQuizAttempted');
+      // console.error('Error: userId is undefined in handleQuizAttempted');
       return handleError('Unable to mark quiz as attempted: user ID is missing.');
     }
 
@@ -47,14 +47,15 @@ const CreateAccountPage = () => {
       });
 
       const result = await response.json();
-      if (response.ok) {
+      const { success } = result;
+      if (success) {
         // console.log('Quiz marked as attempted:', result);
       } else {
         throw new Error(result.message || 'Failed to mark quiz as attempted.');
       }
     } catch (error) {
-      console.error('Error in handleQuizAttempted:', error);
-      handleError(error.message || 'Something went wrong while marking quiz as attempted.');
+      // console.error('Error in handleQuizAttempted:', error);
+      handleError(error.message || 'Something went wrong !');
       setCanNavigate(false);
     }
   };
@@ -62,8 +63,9 @@ const CreateAccountPage = () => {
   // Add the user to quiz attendees
   const addUserToAttendees = async (userId) => {
     if (!userId) {
-      console.error('Error: userId is undefined in addUserToAttendees');
-      return handleError('Unable to add user to attendees: user ID is missing.');
+      // console.error('Error: userId is undefined in addUserToAttendees');
+      // return handleError('Unable to add user to attendees: user ID is missing.');
+      return handleError('Something went wrong!');
     }
 
     try {
@@ -77,13 +79,14 @@ const CreateAccountPage = () => {
       });
 
       const result = await response.json();
-      if (response.ok) {
-        handleSuccess('User added to attendees.');
+      const { success } = result
+      if (success) {
+        // handleSuccess('User added to attendees.');
       } else {
         throw new Error(result.message || 'Failed to add user to attendees.');
       }
     } catch (error) {
-      console.error('Error in addUserToAttendees:', error);
+      // console.error('Error in addUserToAttendees:', error);
       handleError(error.message || 'Something went wrong while adding user to attendees.');
       setCanNavigate(false);
     }
@@ -139,7 +142,7 @@ const CreateAccountPage = () => {
         setCanNavigate(false);
       }
     } catch (error) {
-      console.error('Error in handleCreateAccount:', error);
+      // console.error('Error in handleCreateAccount:', error);
       handleError(error.message || 'Something went wrong while creating the account.');
       setCanNavigate(false);
     }

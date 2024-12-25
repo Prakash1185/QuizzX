@@ -1,43 +1,64 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { AdminContext } from '../context/AdminContext';
 import { handleError, handleSuccess } from '../components/ToastMessages';
 
 const ManageQuestionPage = () => {
-  const { quizInfo, getAllQuestions, setQuestions, questions, BackendURL } = useContext(AdminContext);
+  const { BackendURL } = useContext(AdminContext);
   const { quizId } = useParams();
+  const [questions, setQuestions] = useState([]);
+  const [reload, setReload] = useState(false); // State to trigger re-fetch when needed
 
+  const getAllQuestions = async () => {
+    try {
+      const response = await fetch(`${BackendURL}/quiz/${quizId}/questions/admin`, {
+        method: "GET",
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+
+      const result = await response.json();
+      const { success, message, quiz } = result;
+
+      if (success) {
+        setQuestions(quiz.questions);
+      } else {
+        handleError(message);
+      }
+    } catch (error) {
+      handleError(error);
+    }
+  };
 
   const handleDelete = async (id) => {
     try {
       const response = await fetch(`${BackendURL}/quiz/delete-question/${id}`, {
         method: "DELETE",
         headers: {
-          Authorization: localStorage.getItem('token')
-        }
-      })
+          Authorization: localStorage.getItem('token'),
+        },
+      });
 
-      const result = await response.json()
-      const { success, message } = result
+      const result = await response.json();
+      const { success, message } = result;
 
       if (success) {
-        handleSuccess(message)
-        // setQuestions(questions.filter(question => question._id !== id));
-        getAllQuestions(quizId);
+        handleSuccess(message);
+        // Directly update the state to remove the deleted question
+        setQuestions(questions.filter(question => question._id !== id));
+      } else {
+        handleError(message);
       }
-
-      if (!success) {
-        handleError(message)
-      }
-
     } catch (error) {
-      handleError(error)
+      handleError(error);
     }
-  }
+  };
 
+  // Use useEffect to trigger a re-fetch only when reload state changes
   useEffect(() => {
-    getAllQuestions(quizId);
-  }, [quizId]);
+    getAllQuestions();
+  }, [reload, quizId]);
 
   return (
     <div className="mx-10 py-5 overflow-x-auto">
@@ -86,13 +107,16 @@ const ManageQuestionPage = () => {
                 </h1>
                 <div className='flex flex-col md:flex-row gap-3 md:gap-5 mt-4 w-full'>
                   <Link to={`/admin/quiz/${quizId}/edit-question/${question._id}`} className="md:w-1/2">
-                    <button className="font-inter bg-blue-600 text-white py-2 px-5 rounded-md w-full">
+                    <button disabled className="font-inter bg-blue-600 text-white py-2 px-5 rounded-md w-full">
                       Edit Question
                     </button>
                   </Link>
                   <div className="md:w-1/2">
-                    <button onClick={() => handleDelete(question._id)} className="font-inter bg-red-600 text-white py-2 px-5 rounded-md w-full">
-                      Delete
+                    <button
+                      onClick={() => handleDelete(question._id)}
+                      className="font-inter bg-red-600 text-white py-2 px-5 rounded-md w-full"
+                    >
+                      Delete Question
                     </button>
                   </div>
                 </div>
@@ -100,7 +124,7 @@ const ManageQuestionPage = () => {
             </div>
           ))
         ) : (
-          <h2 className="text-white text-center">No questions available for this quiz.</h2>
+          <p>No questions available.</p>
         )}
       </div>
     </div>

@@ -147,14 +147,14 @@ const AttendQuizPage = () => {
       const scoreResult = await scoreResponse.json();
       const { success, message, score } = scoreResult;
       if (success) {
-        handleSuccess(`Your score is ${score}`);
+        // handleSuccess(`Your score is ${score}`);
         navigate(`/quiz/${quizId}/success`);
         // localStorage.removeItem('userId');
         // localStorage.removeItem('token');
         // localStorage.removeItem('name')
       }
       if (!success) {
-        return handleError(scoreResult.message || "Failed to calculate score");
+        return handleError(scoreResult.message || "Something went wrong!");
       }
 
     } catch (error) {

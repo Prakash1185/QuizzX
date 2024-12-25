@@ -6,9 +6,42 @@ import { AdminContext } from '../context/AdminContext'
 
 const EditQuizPage = () => {
 
-  const { BackendURL, getQuizById, quizInfo } = useContext(AdminContext)
+  const { BackendURL } = useContext(AdminContext)
 
-  const { quizId } = useParams();
+  const [quizInfoo, setQuizInfoo] = useState({})
+
+  const { quizId } = useParams()
+
+  const getQuizByIdd = async (id) => {
+    try {
+      const response = await fetch(`${BackendURL}/quiz/${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: localStorage.getItem('token')
+        }
+      })
+
+      const result = await response.json()
+      const { success, message, quiz } = result
+
+      // console.log(quiz);
+      setQuizInfoo(quiz)
+
+      if (!success) {
+        handleError(message)
+      }
+
+    } catch (error) {
+      handleError(error)
+    }
+  }
+
+  useEffect(() => {
+
+    getQuizByIdd(quizId)
+
+  }, [])
+
   const navigate = useNavigate();
   const [newQuizInfo, setNewQuizInfo] = useState({
     title: '',
@@ -18,10 +51,19 @@ const EditQuizPage = () => {
     description: ''
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
-    getQuizById(quizId)
-    setNewQuizInfo(quizInfo)
-  }, [])
+    // Fetch the quiz data and set it once
+    if (!quizInfoo) {
+      getQuizByIdd(quizId)
+    } else {
+      setNewQuizInfo(quizInfoo)
+    }
+  }, [quizId, quizInfoo]);
+
+  // console.log(quizInfoo);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,6 +74,8 @@ const EditQuizPage = () => {
 
   const handleEditQuiz = async (e) => {
     e.preventDefault();
+
+    setIsLoading(true);
 
     try {
       const response = await fetch(`${BackendURL}/quiz/update-quiz/${quizId}`, {
@@ -62,6 +106,8 @@ const EditQuizPage = () => {
       }
     } catch (error) {
       handleError(error)
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -90,10 +136,13 @@ const EditQuizPage = () => {
 
           <textarea placeholder='Description (max 50 words)' className='px-2 py-2  border-gray-500 bg-dark2 border border-opacity-20 outline-none rounded-md ' onChange={handleChange} name="description" value={newQuizInfo.description} autoComplete='off' required />
 
-          <button type='submit' className="bg-green-700  hover:bg-green-800 transition-all duration-200 py-3 px-10 text-lg text-white rounded-md font-semibold">
-            Edit and Save
+          <button
+            type="submit"
+            className={`bg-green-700  hover:bg-green-800 transition-all duration-200 py-3 px-10 text-lg text-white rounded-md font-semibold ${isLoading ? 'cursor-not-allowed bg-gray-400' : ''}`}
+            disabled={isLoading} // Disable button while loading
+          >
+            {isLoading ? 'Saving...' : 'Edit and Save'} {/* Change button text based on loading state */}
           </button>
-
 
         </form>
       </div>

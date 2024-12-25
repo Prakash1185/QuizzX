@@ -1,59 +1,57 @@
-import { Routes, Route, Navigate } from "react-router-dom"
-import AdminHomePage from './pages/AdminHomePage';
-import AdminAllQuizzesPage from './pages/AdminAllQuizzesPage';
-import CreateQuizPage from './pages/CreateQuizPage';
-import EditQuizPage from './pages/EditQuizPage';
-import ShowAllUsersPage from './pages/ShowAllUsersPage';
-import QuizDetailsPage from './pages/QuizDetailsPage';
-import ErrorPage from './pages/ErrorPage';
-import Navbar from './components/Navbar';
-import AdminLoginPage from './pages/AdminLoginPage';
-import Sidebar from "./components/Sidebar";
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { AdminContext } from "./context/AdminContext";
-import ManageQuestionPage from './pages/ManageQuestionPage';
-import CreateQuestionPage from './pages/CreateQuestionPage';
-import EditQuestionPage from './pages/EditQuestionPage';
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
+import AdminHomePage from "./pages/AdminHomePage";
+import AdminAllQuizzesPage from "./pages/AdminAllQuizzesPage";
+import CreateQuizPage from "./pages/CreateQuizPage";
+import EditQuizPage from "./pages/EditQuizPage";
+import ShowAllUsersPage from "./pages/ShowAllUsersPage";
+import QuizDetailsPage from "./pages/QuizDetailsPage";
+import ErrorPage from "./pages/ErrorPage";
+import AdminLoginPage from "./pages/AdminLoginPage";
+import ManageQuestionPage from "./pages/ManageQuestionPage";
+import CreateQuestionPage from "./pages/CreateQuestionPage";
+import EditQuestionPage from "./pages/EditQuestionPage";
 import LeaderboardPage from "./pages/LeaderboardPage";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import RefreshHandler from './components/RefreshHandler';
 
 const App = () => {
-
     const { isLoggedIn, setIsLoggedIn } = useContext(AdminContext);
+
+    const PrivateRoute = ({ element }) => {
+        return isLoggedIn ? element : <Navigate to={"/admin/login"} />;
+    };
 
     return (
         <div>
-
-            {/* Background Shapes with Blur */}
-            {/* <div className="fixed  top-0 left-0 w-full h-full z-[-10] overflow-hidden">
-                <div className="absolute top-28 left-2 w-40 h-40 bg-Ngreen rounded-full blur-[85px] animate-pulse opacity-50"></div>
-                <div className="absolute bottom-0 -right-5 w-40 h-40 md:w-56 md:h-56 bg-Ngreen rounded-full blur-[85px] animate-pulse opacity-50"></div>
-            </div> */}
-
+            <RefreshHandler setIsLoggedIn={setIsLoggedIn} />
             <Navbar />
             <div className="flex items-start">
                 {isLoggedIn && <Sidebar />}
                 <Routes>
                     <Route path="/" element={<Navigate to="/admin/login" />} />
-                    <Route path="/admin/home" element={<AdminHomePage />} />
                     <Route path="/admin/login" element={<AdminLoginPage />} />
-                    <Route path="/admin/all-quizzes" element={<AdminAllQuizzesPage />} />
-                    <Route path="/admin/create-quiz" element={<CreateQuizPage />} />
-                    <Route path="/admin/edit-quiz/:quizId" element={<EditQuizPage />} />
-                    <Route path="/admin/users-list" element={<ShowAllUsersPage />} />
-                    <Route path="/admin/quiz/:quizId/manage" element={<QuizDetailsPage />} />
-                    <Route path="/admin/quiz/:quizId/leaderboard" element={<LeaderboardPage />} />
-                    <Route path="/admin/quiz/:quizId/manage-questions" element={<ManageQuestionPage />} />
-                    <Route path="/admin/quiz/:quizId/add-question" element={<CreateQuestionPage />} />
-                    <Route path="/admin/quiz/:quizId/edit-question/:questionId" element={<EditQuestionPage />} />
+                    <Route path="/admin/home" element={<PrivateRoute element={<AdminHomePage />} />} />
+                    <Route path="/admin/all-quizzes" element={<PrivateRoute element={<AdminAllQuizzesPage />} />} />
+                    <Route path="/admin/create-quiz" element={<PrivateRoute element={<CreateQuizPage />} />} />
+                    <Route path="/admin/edit-quiz/:quizId" element={<PrivateRoute element={<EditQuizPage />} />} />
+                    <Route path="/admin/users-list" element={<PrivateRoute element={<ShowAllUsersPage />} />} />
+                    <Route path="/admin/quiz/:quizId/manage" element={<PrivateRoute element={<QuizDetailsPage />} />} />
+                    <Route path="/admin/quiz/:quizId/leaderboard" element={<PrivateRoute element={<LeaderboardPage />} />} />
+                    <Route path="/admin/quiz/:quizId/manage-questions" element={<PrivateRoute element={<ManageQuestionPage />} />} />
+                    <Route path="/admin/quiz/:quizId/add-question" element={<PrivateRoute element={<CreateQuestionPage />} />} />
+                    <Route path="/admin/quiz/:quizId/edit-question/:questionId" element={<PrivateRoute element={<EditQuestionPage />} />} />
                     <Route path="*" element={<ErrorPage />} />
                 </Routes>
-                <ToastContainer theme="dark"/>
+                <ToastContainer theme="dark" />
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default App
+export default App;

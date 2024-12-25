@@ -1,6 +1,7 @@
 import QuizModel from "../../models/v1/quizModel.js";
 import QuestionModel from "../../models/v1/questionModel.js";
 import OptionsModel from "../../models/v1/optionsModel.js";
+import UserModel from "../../models/v1/userModel.js";
 
 // Create a quiz 
 const createQuiz = async (req, res) => {
@@ -268,25 +269,47 @@ const updateQuestion = async (req, res) => {
 //     }
 // }
 
+// const deleteQuiz = async (req, res) => {
+//     const { quizId } = req.params;
+
+//     try {
+//         // Step 1: Delete questions associated with the quiz
+//         await QuestionModel.deleteMany({ quizId });
+
+//         // Step 2: Delete options associated with the quiz
+//         await OptionsModel.deleteMany({ quizId });
+
+//         // Step 3: Delete the quiz
+//         await QuizModel.findByIdAndDelete(quizId);
+
+//         res.status(200).json({ message: "Quiz and associated questions/options deleted", success: true });
+//     } catch (error) {
+//         // console.log(error);
+//         res.status(500).json({ message: "Server error", error: error.message, success: false });
+//     }
+// }
+
 const deleteQuiz = async (req, res) => {
     const { quizId } = req.params;
 
     try {
-        // Step 1: Delete questions associated with the quiz
         await QuestionModel.deleteMany({ quizId });
 
-        // Step 2: Delete options associated with the quiz
         await OptionsModel.deleteMany({ quizId });
 
-        // Step 3: Delete the quiz
         await QuizModel.findByIdAndDelete(quizId);
 
-        res.status(200).json({ message: "Quiz and associated questions/options deleted", success: true });
+        await UserModel.deleteMany({ quizzesAttempted: quizId });
+
+        res.status(200).json({ message: "Quiz deleted", success: true });
     } catch (error) {
-        // console.log(error);
+        console.error(error);
         res.status(500).json({ message: "Server error", error: error.message, success: false });
     }
-}
+};
+
+
+
 
 // delete the question for admin with help of questionID
 const deleteQuestion = async (req, res) => {

@@ -19,6 +19,8 @@ const CreateQuestionPage = () => {
     correctOption: ''
   })
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     const copyQuestionInfo = { ...questionInfo };
@@ -28,6 +30,8 @@ const CreateQuestionPage = () => {
 
   const handleCreateQuestion = async (e) => {
     e.preventDefault();
+
+    setIsLoading(true);
 
     const { question, option1, option2, option3, option4, correctOption } = questionInfo;
     if (!question || !option1 || !option2 || !option3 || !option4 || !correctOption) {
@@ -62,11 +66,13 @@ const CreateQuestionPage = () => {
       }
     } catch (error) {
       handleError(error)
+    } finally {
+      setIsLoading(false);
     }
   }
 
   return (
-    <div className='mx-10 py-5 '>
+    <div className='sm:mx-10 py-5 mx-auto px-5 overflow-x-auto '>
       <div className='flex items-center gap-5 mb-5'>
         <Link to={`/admin/quiz/${quizId}/manage-questions`}>
           <button className='font-inter bg-gray-800 text-white py-2 px-5 rounded-md w-20'>
@@ -77,7 +83,7 @@ const CreateQuestionPage = () => {
       </div>
       {/* <h1 className=' text-3xl font-medium text-center font-poppins'>Add Question</h1> */}
       <div className=''>
-        <form className='flex mx-auto flex-col w-[60vw] gap-4 bg-finalDark px-5 py-5 rounded-md border shadow-md border-gray-500 border-opacity-50 max-h-[75vh] overflow-y-scroll' onSubmit={handleCreateQuestion}>
+        <form className='flex mx-auto flex-col w-[25rem] sm:w-[60vw] gap-4 bg-finalDark px-5 py-5 rounded-md border shadow-md border-gray-500 border-opacity-50 max-h-[75vh] overflow-y-scroll' onSubmit={handleCreateQuestion}>
           <input type="text" placeholder='Question' className='px-2 py-2 border-gray-500 bg-dark2 border border-opacity-20 outline-none rounded-md ' onChange={handleChange} name='question' value={questionInfo.question} autoComplete='off' required />
 
           <input type="text" placeholder='Option 1' className='px-2 py-2 border-gray-500 bg-dark2 border border-opacity-20 outline-none rounded-md ' onChange={handleChange} name='option1' value={questionInfo.option1} autoComplete='off' required />
@@ -90,8 +96,12 @@ const CreateQuestionPage = () => {
 
           <input type="number" placeholder='Correct Option' className='px-2 py-2 border-gray-500 bg-dark2 border border-opacity-20 outline-none rounded-md ' onChange={handleChange} name='correctOption' value={questionInfo.correctOption} autoComplete='off' required />
 
-          <button className="bg-green-700  hover:bg-green-800 transition-all duration-200 py-3 px-10 text-lg text-white rounded-md font-semibold">
-            Add
+          <button
+            type="submit"
+            className={`bg-green-700  hover:bg-green-800 transition-all duration-200 py-3 px-10 text-lg text-white rounded-md font-semibold ${isLoading ? 'cursor-not-allowed bg-gray-400' : ''}`}
+            disabled={isLoading} // Disable button while loading
+          >
+            {isLoading ? 'Adding...' : 'Add'}
           </button>
 
         </form>

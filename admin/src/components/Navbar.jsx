@@ -32,7 +32,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="flex w-full justify-around sm:justify-between sm:px-10 md:px-32 lg:px-40 bg-dark2 bg-opacity-100 items-center py-3 z-20 shadow sticky top-0 border-b border-gray-500 border-opacity-50">
+      <nav className="flex w-full justify-around sm:justify-between sm:px-10 md:px-20 lg:px-40 bg-dark2 bg-opacity-100 items-center py-3 z-20 shadow sticky top-0 border-b border-gray-500 border-opacity-50">
         <div>
           <h1
             onClick={() => handleNavigate('/')}
@@ -41,6 +41,13 @@ const Navbar = () => {
             QuizzX <AdminBadge />
           </h1>
         </div>
+
+        {/* Show Logout Button if logged in */}
+        {isLoggedIn && (
+          <div onClick={handleLogout} className="hidden sm:block">
+            <LogoutButton />
+          </div>
+        )}
 
         {/* Show Login Button if not logged in */}
         {!isLoggedIn && (
@@ -104,6 +111,7 @@ const Navbar = () => {
               <p>Users</p>
             </NavLink>
 
+            {/* Show Logout Button in the sidebar if logged in */}
             <div onClick={handleLogout} className="mt-10 ml-2">
               <LogoutButton />
             </div>

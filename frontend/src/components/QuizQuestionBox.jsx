@@ -26,6 +26,14 @@ const QuizQuestionBox = ({ question, options, currentQuestionIndex, totalQuestio
     }
   };
 
+  const formatTime = (seconds) => {
+    if (seconds > 60) {
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = seconds % 60;
+      return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+    }
+    return `00:${seconds.toString().padStart(2, '0')}`;
+  };
 
   return (
     <div className="bg-finalDark rounded-md border border-gray-500 border-opacity-80 px-5 py-3">
@@ -36,7 +44,7 @@ const QuizQuestionBox = ({ question, options, currentQuestionIndex, totalQuestio
           <p className="text-xl md:text-2xl">{question}</p>
         </div>
         <p className="bg-white text-black font-semibold flex items-center px-2.5 mb-1 py-0.5 rounded-full text-sm">
-          {`00:${timeLeft.toString().padStart(2, '0')}`}
+        {formatTime(timeLeft)}
         </p>
       </div>
 

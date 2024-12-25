@@ -145,14 +145,14 @@ export const deleteUserById = async (req, res) => {
 
         // Remove the userId from the attendes array of all quizzes
         await QuizModel.updateMany(
-            { attendes: userId }, // Find all quizzes where this user is in the attendes array
-            { $pull: { attendes: userId } } // Remove the userId from the attendes array
+            { attendes: userId },
+            { $pull: { attendes: userId } }
         );
 
         // Delete the user
         await UserModel.findByIdAndDelete(userId);
 
-        res.status(200).json({ success: true, message: "User deleted and removed from attendes of all quizzes" });
+        res.status(200).json({ success: true, message: "User deleted" });
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: "Server error", error: error.message });
@@ -342,7 +342,7 @@ export const calculateScore = async (req, res) => {
         user.score = score;
         await user.save();
 
-        res.status(200).json({ success: true, score: user.score });
+        res.status(200).json({ success: true });
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: 'Server error', error: error.message });
@@ -444,11 +444,16 @@ export const getLeaderboard = async (req, res) => {
 }
 
 // Delete all users
+
 export const deleteAllUsers = async (req, res) => {
     try {
-        // Proceed to delete all users without looking for an ObjectId in the request
+        // Step 1: Remove all user IDs from the attendes array of all quizzes
+        await QuizModel.updateMany({}, { $set: { attendes: [] } });
+
+        // Step 2: Proceed to delete all users
         await UserModel.deleteMany({});
-        res.status(200).json({ success: true, message: "All users deleted successfully" });
+
+        res.status(200).json({ success: true, message: "All users and their references in quizzes deleted successfully" });
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: "Server error", error: error.message });
@@ -569,5 +574,40 @@ export const getUsersByQuizId = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: 'Server error', error: error.message });
+    }
+};
+
+
+// Controller to delete all users who have attempted a specific quiz
+export const deleteAllUsersByQuizId = async (req, res) => {
+    const { quizId } = req.params;
+
+    if (!quizId) {
+        return res.status(400).json({
+            success: false,
+            message: "Quiz ID is required.",
+        });
+    }
+
+    try {
+        // Step 1: Remove all user IDs from the attendes array of the quiz
+        await QuizModel.updateOne(
+            { _id: quizId },
+            { $set: { attendes: [] } }
+        );
+
+        // Step 2: Delete all users who have attempted the quiz
+        const result = await UserModel.deleteMany({ quizzesAttempted: quizId });
+
+        return res.status(200).json({
+            success: true,
+            message: `${result.deletedCount} attendees deleted successfully.`,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "An error occurred while deleting attendees.",
+            error: error.message,
+        });
     }
 };

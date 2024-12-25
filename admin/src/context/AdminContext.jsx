@@ -16,6 +16,8 @@ const AdminContextProvider = (props) => {
     const BackendURL = import.meta.env.VITE_BACKEND_URL
 
 
+    
+
     //todo: function to get all the quizzes 
     const getAllQuizzes = async () => {
         try {
@@ -141,14 +143,13 @@ const AdminContextProvider = (props) => {
         }
     }
 
-    
+
 
 
     useEffect(() => {
         const token = localStorage.getItem('token')
         if (token) {
             setIsLoggedIn(true)
-            navigate('/admin/home')
         }
     }, [])
 

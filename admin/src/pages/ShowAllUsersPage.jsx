@@ -1,14 +1,31 @@
-import React, { useContext, useEffect } from 'react'
-import CompleteUserDetails from '../components/CompleteUserDetails'
-import { AdminContext } from '../context/AdminContext'
-import { handleError, handleSuccess } from '../components/ToastMessages'
-
+import React, { useContext, useEffect, useCallback, useState } from 'react';
+import { AdminContext } from '../context/AdminContext';
+import { handleError, handleSuccess } from '../components/ToastMessages';
+import CompleteUserDetails from '../components/CompleteUserDetails';
 
 const ShowAllUsersPage = () => {
+  const { BackendURL } = useContext(AdminContext);
+  const [users, setUsers] = useState([]);
 
-  const { BackendURL, getAllUsers, users } = useContext(AdminContext)
-
-
+  const getAllUsers = useCallback(async () => {
+    try {
+      const response = await fetch(`${BackendURL}/user/users`, {
+        method: 'GET',
+        headers: {
+          'Authorization': localStorage.getItem('token'),
+        },
+      });
+      const result = await response.json();
+      const { success, users, message } = result;
+      if (success) {
+        setUsers(users);
+      } else {
+        handleError(message);
+      }
+    } catch (error) {
+      handleError(error.message);
+    }
+  }, [BackendURL]);
 
   const handleUserDeleteAllUsers = async () => {
     try {
@@ -31,11 +48,9 @@ const ShowAllUsersPage = () => {
     }
   };
 
-
   useEffect(() => {
-    getAllUsers()
-  }, [])
-
+    getAllUsers();
+  }, [getAllUsers]);
 
   return (
     <div className='mx-10 py-5 overflow-x-auto'>
@@ -68,12 +83,9 @@ const ShowAllUsersPage = () => {
             })
           )
         }
-
-
-
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ShowAllUsersPage
+export default ShowAllUsersPage;

@@ -150,11 +150,13 @@ const QuizBox = ({ bannerImage, attendes, date, quizTimeLimit, title, descriptio
 
 
     return (
-        <div className='scale-[80%]  min-[550px]:scale-[85%] sm:scale-100 '>
+        <div className='scale-[80%] -mx-4 sm:-mx-0 min-[550px]:scale-[85%] sm:scale-100 w-full'>
             <div className='min-w-[26rem] sm:min-w-[28rem] md:w-[50rem]  md:h-[23.5rem] bg-finalDark bg-opacity-90 rounded-md border  border-gray-500 md:flex-row flex-col flex gap-32 md:gap-3  justify-center border-opacity-85 px-2 sm:py-1 py-2.5'>
 
                 <div id="left" className='w-[25rem] h-[17rem] md:h-[16rem] mx-auto '>
-                    <img src={bannerImage} className='h-full w-full object-cover px-2.5 py-2.5 mb-1 rounded-[15px]' alt="" />
+
+                    <img src={bannerImage} className='h-full w-full object-cover px-1 py-1 sm:px-2.5 sm:py-2.5 mb-1 rounded-[15px]' alt="" />
+
                     <div className='text-lg font-medium px-2.5 py-3 md:py-0.5 flex  justify-between flex-col md:flex-row md:items-end border-b border-gray-500 border-opacity-80 pb-5 md:border-none md:pb-0'>
                         <div className='flex flex-col gap-0.5 '>
                             <p className=''>Attendes : {attendes}</p>
