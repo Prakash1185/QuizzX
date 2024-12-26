@@ -11,6 +11,7 @@ const AdminLoginPage = () => {
     password: '',
     secretKey: ''
   });
+  const [loginLoading, setLoginLoading] = useState(false);
 
   const navigate = useNavigate()
 
@@ -29,6 +30,9 @@ const AdminLoginPage = () => {
       return handleError('Please fill all the details')
     }
     e.preventDefault();
+
+    setLoginLoading(true)
+
     try {
       const response = await fetch(`${BackendURL}/admin/login`, {
         method: "POST",
@@ -56,6 +60,8 @@ const AdminLoginPage = () => {
       }
     } catch (error) {
       handleError(error)
+    } finally {
+      setLoginLoading(false)
     }
   }
 
@@ -71,7 +77,16 @@ const AdminLoginPage = () => {
           <input type="password" className='border border-gray-500  border-opacity-90  py-2 rounded-md px-2 placeholder:text-lg text-white  bg-dark2 outline-none' placeholder='Secret Key' required autoComplete='off' onChange={handleChange} name='secretKey' value={loginInfo.secretKey} />
 
           <div className=' cursor-pointer pt-5' onClick={handleLogin} >
-            <FormLoginButton />
+            {/* <FormLoginButton /> */}
+            <button
+
+              className={`text-lg font-medium cursor-pointer bg-Ngreen hover:bg-Dgreen transition-all duration-300 w-full px-2
+        py-2 rounded-md ' : ''}`}
+              disabled={loginLoading}
+            >
+              {loginLoading ? 'logging in...' : 'Login'}
+            </button>
+
           </div>
         </form>
 
