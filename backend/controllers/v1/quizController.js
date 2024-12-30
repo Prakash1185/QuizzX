@@ -379,7 +379,28 @@ const getQuizStatus = async (req, res) => {
 
     try {
         const quiz = await QuizModel.findById(quizId);
-        res.status(200).json({ isEntryAllowed: quiz.isEntryAllowed, success: true });
+        res.status(200).json({
+            isEntryAllowed: quiz.isEntryAllowed,
+            showLeaderboard: quiz.showLeaderboard
+            , success: true
+        });
+    }
+    catch (error) {
+        // console.log(error);
+        res.status(500).json({ message: "Server error", error: error.message, success: false });
+    }
+}
+
+// function to get isEntryAllowed status of the quiz using quizId
+const getLeaderboardStatus = async (req, res) => {
+    const { quizId } = req.params;
+
+    try {
+        const quiz = await QuizModel.findById(quizId);
+        res.status(200).json({
+            showLeaderboard: quiz.showLeaderboard
+            , success: true
+        });
     }
     catch (error) {
         // console.log(error);
@@ -388,4 +409,4 @@ const getQuizStatus = async (req, res) => {
 }
 
 // exporting all the functions
-export { createQuiz, createQuestion, getAllQuizzes, getAllQuizzesForUser, getQuizQuestionsById, getQuestionById, getQuizById, updateQuiz, updateQuestion, deleteQuiz, deleteQuestion, updateIsEntryStatus, updateShowLeaderboardStatus, getQuizQuestionsByIdForUsers, getQuizStatus };
+export { createQuiz, createQuestion, getAllQuizzes, getAllQuizzesForUser, getQuizQuestionsById, getQuestionById, getQuizById, updateQuiz, updateQuestion, deleteQuiz, deleteQuestion, updateIsEntryStatus, updateShowLeaderboardStatus, getQuizQuestionsByIdForUsers, getQuizStatus, getLeaderboardStatus };

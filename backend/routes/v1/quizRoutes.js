@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createQuestion, createQuiz, deleteQuestion, deleteQuiz, getAllQuizzes, getAllQuizzesForUser, getQuestionById, getQuizById, getQuizQuestionsById, getQuizQuestionsByIdForUsers, getQuizStatus, updateIsEntryStatus, updateQuestion, updateQuiz, updateShowLeaderboardStatus } from '../../controllers/v1/quizController.js';
+import { createQuestion, createQuiz, deleteQuestion, deleteQuiz, getAllQuizzes, getAllQuizzesForUser, getLeaderboardStatus, getQuestionById, getQuizById, getQuizQuestionsById, getQuizQuestionsByIdForUsers, getQuizStatus, updateIsEntryStatus, updateQuestion, updateQuiz, updateShowLeaderboardStatus } from '../../controllers/v1/quizController.js';
 import { QuizValidator } from '../../validation/v1/quizValidatior.js';
 import adminMiddleware from '../../middlewares/v1/adminMiddleware.js';
 import authMiddleware from '../../middlewares/v1/authMiddleware.js';
@@ -18,7 +18,8 @@ quizRouter.get('/:quizId/questions/admin', adminMiddleware, getQuizQuestionsById
 quizRouter.get('/question/:questionId', authMiddleware, getQuestionById);
 quizRouter.get('/question/:questionId/admin', adminMiddleware, getQuestionById);
 quizRouter.get('/:quizId', adminMiddleware, getQuizById);
-quizRouter.get('/:quizId/status',  getQuizStatus);
+quizRouter.get('/:quizId/status', getQuizStatus);
+quizRouter.get('/:quizId/leaderboard/status', getLeaderboardStatus);
 
 
 

@@ -15,7 +15,7 @@ userRouter.delete("/users/delete-by-quiz/:quizId", adminMiddleware, deleteAllUse
 
 // Read routes
 userRouter.get('/users', adminMiddleware, getUsers);
-userRouter.get('/:userId', getUserById);
+userRouter.get('/:userId', authMiddleware,getUserById);
 userRouter.get('/:userId/score', adminMiddleware, getScore);
 userRouter.get('/:quizId/attendes', adminMiddleware, getAttendesDetails);
 userRouter.get('/:quizId/users', getUsersByQuizId);
@@ -33,6 +33,6 @@ userRouter.put('/add-quiz/:quizId', addQuizAttempted);
 userRouter.delete('/:userId', adminMiddleware, deleteUserById);
 
 // Calculate score route
-userRouter.put('/calculate-score/:quizId', calculateScore);
+userRouter.put('/calculate-score/:quizId', authMiddleware,calculateScore);
 
 export default userRouter;
