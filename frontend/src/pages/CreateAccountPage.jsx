@@ -39,7 +39,7 @@ const CreateAccountPage = () => {
   const handleQuizAttempted = async (userId) => {
     if (!userId) {
       // console.error('Error: userId is undefined in handleQuizAttempted');
-      return handleError('Unable to mark quiz as attempted: user ID is missing.');
+      return handleError('Something went wrong');
     }
 
     try {
@@ -54,7 +54,7 @@ const CreateAccountPage = () => {
       if (success) {
         // console.log('Quiz marked as attempted:', result);
       } else {
-        throw new Error(result.message || 'Failed to mark quiz as attempted.');
+        throw new Error(result.message );
       }
     } catch (error) {
       // console.error('Error in handleQuizAttempted:', error);
@@ -86,11 +86,11 @@ const CreateAccountPage = () => {
       if (success) {
         // handleSuccess('User added to attendees.');
       } else {
-        throw new Error(result.message || 'Failed to add user to attendees.');
+        throw new Error(result.message );
       }
     } catch (error) {
       // console.error('Error in addUserToAttendees:', error);
-      handleError(error.message || 'Something went wrong while adding user to attendees.');
+      handleError(error.message );
       setCanNavigate(false);
     }
   };
@@ -125,7 +125,7 @@ const CreateAccountPage = () => {
       const { success, message, token, id, name } = result;
 
       if (success) {
-        handleSuccess(message);
+       // handleSuccess(message);
         setIsAccountCreated(true);
 
         // Store details in localStorage
@@ -148,7 +148,7 @@ const CreateAccountPage = () => {
       }
     } catch (error) {
       // console.error('Error in handleCreateAccount:', error);
-      handleError(error.message || 'Something went wrong while creating the account.');
+      handleError(error.message || 'Something went wrong!');
       setCanNavigate(false);
     } finally {
       setIsLoading(false);
